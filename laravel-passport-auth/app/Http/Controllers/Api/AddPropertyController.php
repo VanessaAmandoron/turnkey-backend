@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePropertyRequest;
 use App\Models\AddProperty;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use PhpParser\Builder\Property;
 
 class AddPropertyController extends Controller
