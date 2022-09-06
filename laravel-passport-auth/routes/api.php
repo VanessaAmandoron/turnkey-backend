@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AddPropertyController;
 use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\Api\ImageController;
 /*
@@ -16,4 +17,6 @@ use App\Http\Controllers\Api\ImageController;
 
 Route::post('register', [PassportAuthController::class, 'register']);
 Route::post('login', [PassportAuthController::class, 'login']);
-Route::post('image',[ImageController::class, 'imageStore']);
+
+Route::apiResource('add_property', AddPropertyController::class);
+Route::post('image', [ImageController::class, 'imageStore']);
