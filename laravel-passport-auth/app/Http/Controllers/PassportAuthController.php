@@ -13,13 +13,15 @@ class PassportAuthController extends Controller
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required|min:8',
-            'full_name' => 'required|min:4',
+            'first_name' => 'required',
+            'last_name' => 'required',
         ]);
  
         $user = User::create([
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'full_name' => $request->full_name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'p_number' => $request->p_number,
             'user_type' => $request->user_type
         ]);
