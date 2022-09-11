@@ -28,6 +28,7 @@ class PassportAuthController extends Controller
        
         $token = $user->createToken('LaravelAuthApp')->accessToken;
  
+        return response()->json('User Created Successfully!');
         return response()->json(['token' => $token], 200);
     }
     public function login(Request $request)
@@ -39,6 +40,7 @@ class PassportAuthController extends Controller
  
         if (auth()->attempt($data)) {
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
+            return response()->json('Login Successfully!');
             return response()->json(['token' => $token], 200);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
