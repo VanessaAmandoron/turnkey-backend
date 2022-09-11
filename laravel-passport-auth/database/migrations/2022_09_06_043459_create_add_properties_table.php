@@ -16,9 +16,9 @@ class CreateAddPropertiesTable extends Migration
         Schema::create('add_properties', function (Blueprint $table) {
             $table->id();
             $table->string('p_title');
-            $table->string('price');
+            $table->integer('price');
             $table->string('p_type');
-            $table->string('area');
+            $table->integer('area');
             $table->integer('bedroom');
             $table->integer('bathroom');
             $table->longText('p_info');
@@ -26,7 +26,7 @@ class CreateAddPropertiesTable extends Migration
             $table->string('loc_b');
             $table->string('city');
             $table->string('z_code');
-            $table->string('p_img');
+            $table->binary('p_img');
             $table->timestamps();
         });
     }
