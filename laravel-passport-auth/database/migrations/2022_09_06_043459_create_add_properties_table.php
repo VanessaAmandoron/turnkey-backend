@@ -15,9 +15,6 @@ class CreateAddPropertiesTable extends Migration
     {
         Schema::create('add_properties', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id'); 
-            $table->foreign('user_id')
-     ->references('id')->on('users')->onDelete('cascade');
             $table->string('p_title');
             $table->integer('price');
             $table->string('p_type');
