@@ -17,7 +17,7 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-       if (! $users = User::all()){
+       if (! $users = User::with('roles.permissions')->get()){
         throw new NotFoundHttpException("Users not found.");
        }
        return $users;
