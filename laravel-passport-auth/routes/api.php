@@ -33,8 +33,7 @@ Route::post('image', [ImageController::class, 'imageStore']);
 // $api->group(['middleware' => ['role:admin'], 'prefix' => 'admin'], function ($api) {
 //     $api->get('/users', 'App\Http\Controllers\Admin\AdminUserController@index');
 // });
-
-Route::group(['middleware' => 'role:admin', 'auth:api'], function () {
+Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
     Route::get('/users', [AdminUserController::class, 'index']);
 });
 

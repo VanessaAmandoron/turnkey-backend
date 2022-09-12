@@ -40,29 +40,30 @@ class RolesAndPermissionSeeder extends Seeder
         //Create permission first.
 
         //Users Permission
-        Permission::create(['name' => $addUser]);
-        Permission::create(['name' => $editUser]);
-        Permission::create(['name' => $deleteUser]);
-        Permission::create(['name' => $suspendUser]);
+        Permission::create(['name' => $addUser,'guard_name' => 'api']);
+        Permission::create(['name' => $editUser,'guard_name' => 'api']);
+        Permission::create(['name' => $deleteUser,'guard_name' => 'api']);
+        Permission::create(['name' => $suspendUser,'guard_name' => 'api']);
 
         //Property Permission
-        Permission::create(['name' => $approveProperty]);
-        Permission::create(['name' => $declineProperty]);
+        Permission::create(['name' => $approveProperty,'guard_name' => 'api']);
+        Permission::create(['name' => $declineProperty,'guard_name' => 'api']);
 
         //Manage Property
-        Permission::create(['name' => $addProperty]);
-        Permission::create(['name' => $editProperty]);
-        Permission::create(['name' => $deleteProperty]);
-        Permission::create(['name' => $viewProperty]);
+        Permission::create(['name' => $addProperty,'guard_name' => 'api']);
+        Permission::create(['name' => $editProperty,'guard_name' => 'api']);
+        Permission::create(['name' => $deleteProperty,'guard_name' => 'api']);
+        Permission::create(['name' => $viewProperty,'guard_name' => 'api']);
 
         $admin = 'admin';
         $agent = 'agent';
         $client = 'client';
 
-        Role::create(['name' => $admin])->givePermissionTo(Permission::all());
+        $role = Role::create(['name' => $admin, 'guard_name' => 'api']);
+        $role->givePermissionTo(Permission::all());
 
-        Role::create(['name' => $agent])->givePermissionTo([$editProperty, $addProperty, $deleteProperty, $viewProperty]);
+        Role::create(['name' => $agent, 'guard_name' => 'api'])->givePermissionTo([$editProperty, $addProperty, $deleteProperty, $viewProperty]);
 
-        Role::create(['name' => $client])->givePermissionTo([$viewProperty]);
+        Role::create(['name' => $client, 'guard_name' => 'api'])->givePermissionTo([$viewProperty]);
     }
 }
