@@ -99,8 +99,9 @@ class AddPropertyController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AddProperty $property)
+    public function destroy(AddProperty $property , $id)
     {
+        $property = AddProperty::find($id);
         $property->delete();
 
         return response()->json([
