@@ -26,8 +26,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::group(['middleware' => 'auth:api'], function(){
     Route::post('user-details', [AuthController::class, 'userDetails']);
 
-    Route::apiResource('property', PropertyController::class);
 });
+Route::apiResource('property', PropertyController::class);  
 
 Route::post('image', [ImageController::class, 'imageStore']);
 
