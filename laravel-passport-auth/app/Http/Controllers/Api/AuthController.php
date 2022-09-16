@@ -18,7 +18,6 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|min:8',
-            'c_password' => 'required|same:password',
             'first_name' => 'required',
             'last_name' => 'required',
             'user_type' => 'required',
@@ -29,9 +28,8 @@ class AuthController extends Controller
 
         $input = $request->all(); 
         $input['password'] = bcrypt($input['password']); 
-        $input['c_password'] = bcrypt($input['c_password']); 
         $users = User::create($input); 
-        $users->assignRole($request->input('roles'));
+        $users->assignRole($request->input('user_type'));
         $success['name'] =  $users -> first_name;
         $success['token'] =  $users->createToken('laravel-passport-auth')-> accessToken; 
         return response()->json(['Successfully created an account.'=>$success], $this-> successStatus); 
