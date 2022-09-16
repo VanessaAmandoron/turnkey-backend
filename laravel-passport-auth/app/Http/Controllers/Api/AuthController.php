@@ -29,7 +29,6 @@ class AuthController extends Controller
         $input = $request->all(); 
         $input['password'] = bcrypt($input['password']); 
         $users = User::create($input); 
-        $users->assignRole($request->input('roles'));
         $success['name'] =  $users -> first_name;
         $success['token'] =  $users->createToken('laravel-passport-auth')-> accessToken; 
         return response()->json(['Successfully created an account.'=>$success], $this-> successStatus); 
@@ -53,5 +52,12 @@ class AuthController extends Controller
     { 
         $user = Auth::user(); 
         return response()->json(['success' => $user], $this-> successStatus); 
+    }
+    public function index()
+    {
+
+        $users = User::get();
+        return view('user/index', compact('users'));
+        
     }
 }

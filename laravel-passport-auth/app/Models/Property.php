@@ -21,7 +21,10 @@ class Property extends Model
         'area',
         'z_code',
         'city',
-        'p_img',
-        'user_id'
+        'p_img'
     ];
+
+    public function author(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

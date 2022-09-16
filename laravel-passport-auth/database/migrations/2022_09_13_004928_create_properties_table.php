@@ -30,14 +30,14 @@ class CreatePropertiesTable extends Migration
             $table->binary('p_img');
             $table->timestamps();
             $table->foreignId('user_id')
-                ->references('id')->on('users')->onDelete('cascade');
+                ->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
     /**
      * Reverse the migrations.
      *
-     * @return void
+     * @return void 
      */
     public function down()
     {
