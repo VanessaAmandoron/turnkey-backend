@@ -21,6 +21,7 @@ class Property extends Model
         'area',
         'z_code',
         'city',
-        'p_img'
+        'p_img',
+        'user_id'
     ];
 }

@@ -14,7 +14,8 @@ class CreatePropertiesTable extends Migration
     public function up()
     {
         Schema::create('properties', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
             $table->string('p_title');
             $table->integer('price');
             $table->string('p_type');
@@ -28,6 +29,8 @@ class CreatePropertiesTable extends Migration
             $table->string('z_code');
             $table->binary('p_img');
             $table->timestamps();
+            $table->foreignId('user_id')
+                ->references('id')->on('users')->onDelete('cascade');
         });
     }
 

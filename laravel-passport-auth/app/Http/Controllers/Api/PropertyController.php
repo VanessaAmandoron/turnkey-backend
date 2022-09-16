@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Property;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 // use Illuminate\Support\Facades\Validator;
 
 
@@ -44,7 +46,8 @@ class PropertyController extends Controller
             'area' => 'required',
             'z_code' => 'required',
             'city' => 'required',
-            'p_img' => 'required'
+            'p_img' => 'required',
+            'user_id' => Auth::user()->id
         ]);
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
