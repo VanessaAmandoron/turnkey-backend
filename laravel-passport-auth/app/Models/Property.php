@@ -24,7 +24,7 @@ class Property extends Model
         'p_img'
     ];
 
-    public function author(){
-        return $this->belongsTo(User::class, 'user_id');
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

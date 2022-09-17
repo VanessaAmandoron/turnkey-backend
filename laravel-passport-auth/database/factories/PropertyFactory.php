@@ -17,7 +17,6 @@ class PropertyFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' =>  User::pluck('id')->random(),
             'p_title' => $this->faker->unique()->word,
             'price' => $this->faker->randomDigit,
             'p_type' => $this->faker->randomElement(['For Rent', 'For Sale']),

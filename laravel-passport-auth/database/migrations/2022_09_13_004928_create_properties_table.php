@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,7 @@ class CreatePropertiesTable extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignIdFor(User::class);
             $table->string('p_title');
             $table->integer('price');
             $table->string('p_type');
@@ -29,8 +30,7 @@ class CreatePropertiesTable extends Migration
             $table->string('z_code');
             $table->binary('p_img');
             $table->timestamps();
-            $table->foreignId('user_id')
-                ->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+           
         });
     }
 

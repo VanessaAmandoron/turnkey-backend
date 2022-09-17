@@ -49,8 +49,11 @@ class User extends Authenticatable
     ];
     protected $guard_name = 'api';
 
-    public function properties(){
-        return $this->hasMany(Property::class, 'user_id', 'id');
+
+    public function properties()
+    {
+        return $this->hasMany(Property::class);
     }
+
 
 }
