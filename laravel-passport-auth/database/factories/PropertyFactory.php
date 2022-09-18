@@ -17,7 +17,7 @@ class PropertyFactory extends Factory
     public function definition()
     {
         return [
-            'p_title' => $this->faker->unique()->word,
+            'p_title' => $this->faker->word,
             'price' => $this->faker->randomDigit,
             'p_type' => $this->faker->randomElement(['For Rent', 'For Sale']),
             'area' => $this->faker->randomDigit,
