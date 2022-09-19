@@ -24,17 +24,17 @@ class StorePropertyRequest extends FormRequest
     public function rules()
     {
              return [
-                "p_title" => "required|max:70",
+                "title" => "required|max:70",
                 "price" => "required",
-                "p_type" => "required",
+                "type" => "required|integer",
                 "area" => "required",
-                "bathroom" => "required",
-                "bedroom" => "required",
-                "p_info" => "required",
-                "loc_a" => "required",
-                "loc_b" => "required",
+                "bathroom" => "integer",
+                "bedroom" => "integer",
+                "description" => "nullable",
+                "address_1" => "required",
+                "address_2" => "required",
                 "city" => "required",
-                "z_code" => "required"
+                "zip_code" => "required|integer"
         ];
     }
 }

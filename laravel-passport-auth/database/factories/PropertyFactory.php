@@ -17,19 +17,18 @@ class PropertyFactory extends Factory
     public function definition()
     {
         return [
-            'p_title' => $this->faker->word,
+            'title' => $this->faker->word,
             'price' => $this->faker->randomDigit,
-            'p_type' => $this->faker->randomElement(['For Rent', 'For Sale']),
+            'type' => $this->faker->randomElement([1, 2]),
             'area' => $this->faker->randomDigit,
             'bedroom' => $this->faker->randomDigit,
             'bathroom' => $this->faker->randomDigit,
-            'p_info' => $this->faker->word,
-            'loc_a' => $this->faker->word,
-            'loc_b' => $this->faker->word,
-            'area' => $this->faker->randomDigit,
-            'z_code' => $this->faker->randomDigit,
+            'description' => $this->faker->word,
+            'address_1' => $this->faker->address,
+            'address_2' => $this->faker->address,
+            'zip_code' => $this->faker->randomDigit,
             'city' => $this->faker->name,
-            'p_img' => "",
+            // 'p_img' => "",
         ];
     }
 }

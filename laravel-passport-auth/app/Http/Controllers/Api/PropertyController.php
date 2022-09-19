@@ -3,17 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePropertyRequest;
 use App\Models\Property;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+
 // use Illuminate\Support\Facades\Validator;
 
 
 class PropertyController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -30,29 +33,17 @@ class PropertyController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StorePropertyRequest $request)
     {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'p_title' => 'required',
-            'price' => 'required',
-            'p_type' => 'required',
-            'area' => 'required',
-            'bedroom' => 'required',
-            'bathroom' => 'required',
-            'p_info' => 'required',
-            'loc_a' => 'required',
-            'loc_b' => 'required',
-            'area' => 'required',
-            'z_code' => 'required',
-            'city' => 'required',
-            'p_img' => 'required',
-            'user_id' => Auth::user()->id
-        ]);
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-        $property = Property::create($input);
+        $user = $request->user();       
+        $input = $request->validated();
+        $input["user_id"] = $user->id;
+        
+
+        $property = Property::make($input);
+        $user->properties()->save($property);
+        $property->refresh();
+
         return response()->json([
             "success" => true,
             "message" => "Property created successfully.",
@@ -77,14 +68,14 @@ class PropertyController extends Controller
      */
     public function show($id)
     {
-        $product = Property::find($id);
-        if (is_null($product)) {
-            return $this->sendError('Product not found.');
+        $property = Property::find($id);
+        if (is_null($property)) {
+            return $this->sendError('Property not found.');
         }
         return response()->json([
             "success" => true,
-            "message" => "Product retrieved successfully.",
-            "data" => $product
+            "message" => "Property retrieved successfully.",
+            "data" => $property
         ]);
     }
 

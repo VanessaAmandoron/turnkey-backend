@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PropertyController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ImageController;
-use App\Http\Controllers\Admin\AdminUserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,14 +26,12 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('user-details', [AuthController::class, 'userDetails']);
 
 });
-Route::apiResource('property', PropertyController::class);  
+Route::apiResource('property', PropertyController::class)->middleware("auth:api");  
 
 Route::post('image', [ImageController::class, 'imageStore']);
 
 
-Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
-    Route::get('/users', [AdminUserController::class, 'index']);
-});
+
 
 
 
