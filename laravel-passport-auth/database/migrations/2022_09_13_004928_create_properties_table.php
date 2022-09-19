@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,26 +16,29 @@ class CreatePropertiesTable extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->string('p_title');
-            $table->integer('price');
-            $table->string('p_type');
+            $table->foreignIdFor(User::class)->constrained();
+            $table->string('title');
+            $table->decimal('price', 13, 3); 
+            $table->unsignedTinyInteger('type');
             $table->integer('area');
-            $table->integer('bedroom');
-            $table->integer('bathroom');
-            $table->longText('p_info');
-            $table->string('loc_a');
-            $table->string('loc_b');
+            $table->unsignedTinyInteger('bedroom')->default(0);
+            $table->unsignedTinyInteger('bathroom')->default(0);
+            $table->longText('description')->nullable();
+            $table->string('address_1');
+            $table->string('address_2');
             $table->string('city');
-            $table->string('z_code');
-            $table->binary('p_img');
+            $table->unsignedInteger('zip_code');
+            // $table->binary('img');
             $table->timestamps();
+            $table->softDeletes();
+           
         });
     }
 
     /**
      * Reverse the migrations.
      *
-     * @return void
+     * @return void 
      */
     public function down()
     {
