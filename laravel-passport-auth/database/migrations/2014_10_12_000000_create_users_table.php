@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('p_number')->unique();
             $table->string('user_type');
-            $table->binary('prof_pic');
+            // $table->binary('prof_pic');
             $table->rememberToken();
             $table->timestamps();
         });
