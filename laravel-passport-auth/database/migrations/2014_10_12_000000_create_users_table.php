@@ -22,7 +22,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('phone_number')->unique();
             $table->unsignedTinyInteger('user_type');
-            $table->enum('level',['admin', 'agent', 'client']);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

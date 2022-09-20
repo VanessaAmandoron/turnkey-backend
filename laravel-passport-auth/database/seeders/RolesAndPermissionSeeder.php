@@ -54,6 +54,8 @@ class RolesAndPermissionSeeder extends Seeder
         Permission::create(['name' => $editProperty,'guard_name' => 'api']);
         Permission::create(['name' => $deleteProperty,'guard_name' => 'api']);
         Permission::create(['name' => $viewProperty,'guard_name' => 'api']);
+        Permission::create(['name' => $reserveProperty,'guard_name' => 'api']);
+        Permission::create(['name' => $rentProperty,'guard_name' => 'api']);
 
         $admin = 'admin';
         $agent = 'agent';
