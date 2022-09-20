@@ -23,7 +23,8 @@ Route::post('login', [AuthController::class, 'login']);
 
 
 Route::group(['middleware' => 'auth:api'], function(){
-    Route::post('user-details', [AuthController::class, 'userDetails']);
+    Route::get('user-details', [AuthController::class, 'userDetails']);
+    Route::get('users', [AuthController::class, 'user/index']);
 
 });
 Route::apiResource('property', PropertyController::class)->middleware("auth:api");  
