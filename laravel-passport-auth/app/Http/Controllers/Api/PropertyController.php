@@ -36,6 +36,7 @@ class PropertyController extends Controller
     public function store(StorePropertyRequest $request)
     {
         $user = $request->user();       
+        
         $input = $request->validated();
         $input["user_id"] = $user->id;
         
