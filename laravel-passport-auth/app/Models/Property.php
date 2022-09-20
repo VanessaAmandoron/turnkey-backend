@@ -20,7 +20,7 @@ class Property extends Model
         'address_2',
         'zip_code',
         'city'
-        // 'p_img'
+        // 'image'
     ];
 
     public function user(){
