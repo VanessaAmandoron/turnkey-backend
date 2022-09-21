@@ -40,9 +40,10 @@ class AuthController extends Controller
         if(Auth::attempt(['email' => request('email'), 'password' => request('password'), ])){ 
             $users = Auth::user(); 
             $success['Token'] =  $users->createToken('laravel-passport-auth')-> accessToken; 
-            $success['User ID:'] = $users->id;
-            $success['User Name:'] = $users->first_name;
-            return response()->json(['Successfully Logged In.' => $success], $this-> successStatus); 
+            $success['user_id'] = $users->id;
+            $success['user_name'] = $users->first_name;
+            $success['user_role'] = $users->user_type;
+            return response()->json(["data" => $success], $this-> successStatus); 
         } 
         
         else{ 
