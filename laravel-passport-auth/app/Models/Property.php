@@ -19,8 +19,8 @@ class Property extends Model
         'address_1',
         'address_2',
         'zip_code',
-        'city'
-        // 'image'
+        'city',
+        'image'
     ];
 
     public function user(){

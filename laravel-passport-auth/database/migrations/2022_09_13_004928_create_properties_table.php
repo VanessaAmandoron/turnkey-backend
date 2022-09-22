@@ -28,7 +28,7 @@ class CreatePropertiesTable extends Migration
             $table->string('address_2');
             $table->string('city');
             $table->unsignedInteger('zip_code');
-            // $table->binary('img');
+            $table->binary('img');
             $table->timestamps();
             $table->softDeletes();
            
