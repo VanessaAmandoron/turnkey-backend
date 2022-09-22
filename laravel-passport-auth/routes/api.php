@@ -25,11 +25,13 @@ Route::post('login', [AuthController::class, 'login']);
 Route::group(['middleware' => 'auth:api'], function(){
     Route::get('user-details', [AuthController::class, 'userDetails']);
     Route::get('users', [AuthController::class, 'user/index']);
-
+    Route::post('verify', [AuthController::class, 'VerifyEmail']);
+    
 });
 Route::apiResource('property', PropertyController::class)->middleware("auth:api");  
 
 Route::post('image', [ImageController::class, 'imageStore']);
+
 
 
 
