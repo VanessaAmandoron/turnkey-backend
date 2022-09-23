@@ -18,7 +18,7 @@ class CreatePropertiesTable extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
             $table->string('title');
-            $table->decimal('price', 13, 3); 
+            $table->decimal('price', 13, 2); 
             $table->unsignedTinyInteger('type');
             $table->integer('area');
             $table->unsignedTinyInteger('bedroom')->default(0);
@@ -28,7 +28,7 @@ class CreatePropertiesTable extends Migration
             $table->string('address_2');
             $table->string('city');
             $table->unsignedInteger('zip_code');
-            $table->text('img');
+            $table->text('img')->nullable();
             $table->timestamps();
             $table->softDeletes();
            
