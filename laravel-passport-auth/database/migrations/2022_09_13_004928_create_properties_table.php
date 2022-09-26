@@ -20,7 +20,7 @@ class CreatePropertiesTable extends Migration
             $table->string('title');
             $table->decimal('price', 13, 2); 
             $table->unsignedTinyInteger('type');
-            $table->integer('area');
+            $table->unsignedinteger('area')->default(0);
             $table->unsignedTinyInteger('bedroom')->default(0);
             $table->unsignedTinyInteger('bathroom')->default(0);
             $table->longText('description')->nullable();

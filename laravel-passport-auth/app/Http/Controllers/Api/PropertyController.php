@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePropertyRequest;
 use App\Models\Property;
+use App\Models\PropertyImages;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -43,6 +44,9 @@ class PropertyController extends Controller
 
         $property = Property::make($input);
         $user->properties()->save($property);
+        PropertyImages::create([
+            "img"=>$request->img
+        ]);
         $property->refresh();
 
         return response()->json([

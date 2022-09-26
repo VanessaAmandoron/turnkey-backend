@@ -51,7 +51,7 @@ class User extends Authenticatable implements MustVerifyEMail
     protected $guard_name = 'api';
 
 
-    public function properties()
+public function properties()
     {
         return $this->hasMany(Property::class);
     }
