@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PropertyController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ImageController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,12 +24,13 @@ Route::post('login', [AuthController::class, 'login']);
 
 
 Route::group(['middleware' => 'auth:api'], function(){
-    Route::get('user-details', [AuthController::class, 'userDetails']);
+    Route::get('profile', [AuthController::class, 'UserDetails']);
+    Route::put('profile/edit', [AuthController::class, 'EditProfile']);
     Route::get('users', [AuthController::class, 'user/index']);
     Route::post('verify', [AuthController::class, 'VerifyEmail']);
+    Route::apiResource('property', PropertyController::class);  
     
 });
-Route::apiResource('property', PropertyController::class)->middleware("auth:api");  
 
 Route::post('image', [ImageController::class, 'imageStore']);
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
 use Symfony\Component\Mime\Email;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -56,7 +57,7 @@ class AuthController extends Controller
         }
     }
 
-    public function userDetails()
+    public function UserDetails()
     {
         $user = Auth::user();
         return response()->json(['success' => $user], $this->successStatus);
@@ -81,5 +82,40 @@ class AuthController extends Controller
             "message" => "error link",
             "user" => Auth::user()
         ]);
+    }
+
+    public function EditProfile(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                
+                'profile_picture' => 'nullable|image',
+            ]);
+
+            if ($validator->fails()) {
+                $error = $validator->errors()->all()[0];
+                return response()->json(['status => false', 'message' => $error, 'data' => []], 422);
+            }
+            else{
+                $user = User::find($request->user()->id);
+                $user->first_name = $request->first_name;
+                $user->last_name = $request->last_name;
+                $user->email = $request->email;
+                $user->phone_number = $request->phone_number;
+                $user->profile_picture = $request->profile_picture;
+
+                if($request->profile_picture && $request->profile_picture->isValid()){
+                    $filename = time().'.'.$request->profile_picture->extenction();
+                    $path = "public/images/$filename";
+                    $user->profile_picture = $path;
+                }
+
+                $user->update();
+                return response()->json(['status => true', 'message' => "Profile Updated.", 'data' => $user]);
+                
+            }
+        } catch (\Exception $e) {
+            return response()->json(['status => false', 'message' => $e->getMessage(), 'data' => []], 500);
+        }
     }
 }
