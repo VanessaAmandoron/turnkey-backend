@@ -27,7 +27,7 @@ class User extends Authenticatable implements MustVerifyEMail
         'last_name',
         'phone_number',
         'user_type',
-        'profile_picture'
+        'avatar'
     ];
 
     /**
@@ -54,6 +54,11 @@ class User extends Authenticatable implements MustVerifyEMail
     public function properties()
     {
         return $this->hasMany(Property::class);
+    }
+
+    public function contactagent()
+    {
+        return $this->hasMany(ContactAgent::class);
     }
 
 

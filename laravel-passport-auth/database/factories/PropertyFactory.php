@@ -18,7 +18,7 @@ class PropertyFactory extends Factory
     {
         return [
             'title' => $this->faker->word,
-            'price' => $this->faker->randomDigit,
+            'price' => $this->faker->numberBetween($min = 15000, $max = 3000000),
             'type' => $this->faker->randomElement([1, 2]),
             'area' => $this->faker->randomDigit,
             'bedroom' => $this->faker->randomDigit,

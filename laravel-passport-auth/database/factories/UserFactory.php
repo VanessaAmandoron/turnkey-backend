@@ -21,8 +21,8 @@ class UserFactory extends Factory
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'phone_number' => $this->faker->phoneNumber,
-            'user_type' => $this->faker->randomElement(['1', '2']), // 2=Agent ; 3=Client
-            'profile_picture' => $this->faker->imageUrl( 400, 300),
+            'user_type' => $this->faker->randomElement([1, 2]), // 2=Agent ; 3=Client
+            'avatar' => $this->faker->imageUrl( 400, 300),
             'remember_token' => Str::random(10)
         ];
     }
