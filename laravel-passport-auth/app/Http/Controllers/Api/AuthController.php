@@ -98,10 +98,10 @@ class AuthController extends Controller
             }
             else{
                 $user = User::find($request->user()->id);
-                if($request->profile_picture && $request->profile_picture->isValid()){
-                    $filename = time().'.'.$request->profile_picture->extenction();
+                if($request->avatar && $request->avatar->isValid()){
+                    $filename = time().'.'.$request->avatar->extenction();
                     $path = "public/images/$filename";
-                    $user->profile_picture = $path;
+                    $user->avatar = $path;
                 }
 
                 $user->update($request->all());
