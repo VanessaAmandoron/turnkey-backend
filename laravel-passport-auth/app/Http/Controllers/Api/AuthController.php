@@ -98,19 +98,13 @@ class AuthController extends Controller
             }
             else{
                 $user = User::find($request->user()->id);
-                $user->first_name = $request->first_name;
-                $user->last_name = $request->last_name;
-                $user->email = $request->email;
-                $user->phone_number = $request->phone_number;
-                $user->profile_picture = $request->profile_picture;
-
                 if($request->profile_picture && $request->profile_picture->isValid()){
                     $filename = time().'.'.$request->profile_picture->extenction();
                     $path = "public/images/$filename";
                     $user->profile_picture = $path;
                 }
 
-                $user->update();
+                $user->update($request->all());
                 return response()->json(['status => true', 'message' => "Profile Updated.", 'data' => $user]);
                 
             }
