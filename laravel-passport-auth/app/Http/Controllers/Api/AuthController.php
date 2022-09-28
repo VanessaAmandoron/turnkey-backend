@@ -64,7 +64,7 @@ class AuthController extends Controller
     }
     public function index()
     {
-        $users = User::get();
+        $users = User::paginate(20);
         return response()->json($users);
     }
     public function VerifyEmail()
