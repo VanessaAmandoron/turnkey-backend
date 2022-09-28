@@ -66,7 +66,7 @@ class AuthController extends Controller
     {
 
         $users = User::get();
-        return view('user/index', compact('users'));
+        return response()->json($users);
     }
     public function VerifyEmail()
     {

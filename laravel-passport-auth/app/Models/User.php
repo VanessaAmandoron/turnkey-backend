@@ -56,7 +56,7 @@ class User extends Authenticatable implements MustVerifyEMail
         return $this->hasMany(Property::class);
     }
 
-    public function contactagent()
+    public function ContactAgent()
     {
         return $this->hasMany(ContactAgent::class);
     }

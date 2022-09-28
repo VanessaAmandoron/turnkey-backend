@@ -15,6 +15,10 @@ class ContactAgent extends Model
         'name', 
         'property', 
         'email', 
-        'mobile'
+        'phone_number'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

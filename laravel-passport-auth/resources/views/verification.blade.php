@@ -3,14 +3,10 @@
   <div style="width:200px;margin-bottom:10px;"><a href=""><img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/307773645_606913307775399_5444438779859176097_n.png?_nc_cat=110&ccb=1-7&_nc_sid=aee45a&_nc_ohc=6ZMXDaITUK4AX9590X_&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AVKIiPs93nqXa_RjQjo9EdyzP8UITnNOn09-hw82cSUZNg&oe=634FD27E" alt="logo" style="width:100%; "></a>
                                                </div>
                                                
-                                               
-
   <h1 style="font-family: 'Quicksand'; text-align: left; font-weight: bold; color:#333; margin-top:40px;margin-bottom:40px; padding:3px 0px; text-transform:uppercase; ">Email Confirmation</h1>
-  <p style=" text-align: justify; font-family: 'Quicksand';  margin-bottom:0px;">Hi {{$user["first_name"]}} {{$user["last_name"]}}. Thank you for signing up in Turnkey. You're almost ready to successfully create your account.
-  Simply click the blue button below to verify your account</p>
-   <h4 style="text-align: left; margin-top:30px" >Please follow the link<br> 
-   <a style="color:#15c;font-size:12px;"href="{{$user["link"]}}">
-    {{$user["link"]}}</a>
+  <p style=" text-align: justify; font-family: 'Quicksand';  margin-bottom:0px;">Hi {{$user["first_name"]}} {{$user["last_name"]}}. Thank you for signing up in Turnkey. You're almost ready to successfully create your account.</p>
+   <h4 style="text-align: left; margin-top:30px" >Please click the button below to verify your account.<br> 
+   
   </h4>
 <div style=" margin-top:10px; ">
 
@@ -21,8 +17,4 @@
   </div>
   <br>
   
-
-
 </div>
- 
-
