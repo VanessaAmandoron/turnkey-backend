@@ -64,9 +64,8 @@ class AuthController extends Controller
     }
     public function index()
     {
-
         $users = User::get();
-        return view('user/index', compact('users'));
+        return response()->json($users);
     }
     public function VerifyEmail()
     {
@@ -88,28 +87,43 @@ class AuthController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                
+
                 'profile_picture' => 'nullable|image',
             ]);
 
             if ($validator->fails()) {
                 $error = $validator->errors()->all()[0];
                 return response()->json(['status => false', 'message' => $error, 'data' => []], 422);
-            }
-            else{
+            } else {
                 $user = User::find($request->user()->id);
-                if($request->avatar && $request->avatar->isValid()){
-                    $filename = time().'.'.$request->avatar->extenction();
+                if ($request->avatar && $request->avatar->isValid()) {
+                    $filename = time() . '.' . $request->avatar->extenction();
                     $path = "public/images/$filename";
                     $user->avatar = $path;
                 }
 
                 $user->update($request->all());
                 return response()->json(['status => true', 'message' => "Profile Updated.", 'data' => $user]);
-                
             }
         } catch (\Exception $e) {
             return response()->json(['status => false', 'message' => $e->getMessage(), 'data' => []], 500);
         }
+    }
+
+    //users role
+    public function viewUsersRoleAdmin()
+    {
+        $users = User::where('user_type', 1)->get(); //admin
+        return response()->json($users);
+    }
+    public function viewUsersRoleAgent()
+    {
+        $users = User::where('user_type', 2)->get(); //agent
+        return response()->json($users);
+    }
+    public function viewUsersRoleClient()
+    {
+        $users = User::where('user_type', 3)->get(); //client
+        return response()->json($users);
     }
 }
