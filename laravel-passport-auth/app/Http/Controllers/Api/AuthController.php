@@ -113,17 +113,17 @@ class AuthController extends Controller
     //users role
     public function viewUsersRoleAdmin()
     {
-        $users = User::where('user_type', 1)->get(); //admin
+        $users = User::where('user_type', 1)->get(['id', 'first_name', 'last_name', 'email','user_type']); //admin
         return response()->json($users);
     }
     public function viewUsersRoleAgent()
     {
-        $users = User::where('user_type', 2)->get(); //agent
+        $users = User::where('user_type', 2)->get(['id', 'first_name', 'last_name', 'email','user_type']); //agent
         return response()->json($users);
     }
     public function viewUsersRoleClient()
     {
-        $users = User::where('user_type', 3)->get(); //client
+        $users = User::where('user_type', 3)->get(['id', 'first_name', 'last_name', 'email','user_type']); //client
         return response()->json($users);
     }
 }
