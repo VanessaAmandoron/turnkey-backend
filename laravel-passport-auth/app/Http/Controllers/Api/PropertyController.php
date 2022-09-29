@@ -25,7 +25,7 @@ class PropertyController extends Controller
     public function index()
     {
         $property = Property::paginate(20);
-
+        
         return response()->json([
             "success" => true,
             "message" => "Property List",
@@ -125,6 +125,7 @@ class PropertyController extends Controller
     //property restore
     public function restore($id)
     {
+        
         Property::withTrashed()->find($id)->restore();
         $property = Property::find($id);
         return response()->json(['message' => "Property Successfully Restored.", 'data' => $property]);

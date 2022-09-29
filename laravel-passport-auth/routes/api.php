@@ -30,6 +30,8 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('verify', [AuthController::class, 'VerifyEmail']);
     Route::apiResource('property', PropertyController::class);  
     
+    Route::post('property/restore/{id}', [PropertyController::class, 'restore']);  
+
     Route::delete('users/delete/{id}', [AuthController::class, 'delete']);
     Route::post('users/restore/{id}', [AuthController::class, 'restore']);
     
