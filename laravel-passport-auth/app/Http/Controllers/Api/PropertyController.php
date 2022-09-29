@@ -122,4 +122,12 @@ class PropertyController extends Controller
             "data" => $property
         ]);
     }
+    //property restore
+    public function restore($id)
+    {
+        Property::withTrashed()->find($id)->restore();
+        $property = Property::find($id);
+        return response()->json(['message' => "Property Successfully Restored.", 'data' => $property]);
+    }
+    //end Property restore
 }
