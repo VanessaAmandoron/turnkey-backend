@@ -30,6 +30,9 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('verify', [AuthController::class, 'VerifyEmail']);
     Route::apiResource('property', PropertyController::class);  
     
+    Route::delete('users/delete/{id}', [AuthController::class, 'delete']);
+    Route::post('users/restore/{id}', [AuthController::class, 'restore']);
+    
     Route::get('users-role/admin', [AuthController::class, 'viewUsersRoleAdmin']);//pending pani
     Route::get('users-role/agent', [AuthController::class, 'viewUsersRoleAgent']);//pending pani
     Route::get('users-role/client', [AuthController::class, 'viewUsersRoleClient']);//pending pani
