@@ -110,20 +110,40 @@ class AuthController extends Controller
         }
     }
 
+    //start delete users
+    public function delete($id)
+    {
+        $users = User::find($id);
+        $users->delete();
+        return response()->json(['message' => "User Successfully Deleted.", 'data' => $users]);
+    }
+    //end delete users
+    //start restore users
+    public function restore($id)
+    {
+        User::withTrashed()->find($id)->restore();
+        $users = User::find($id);
+        return response()->json(['message' => "User Successfully Restored.", 'data' => $users]);
+    }
+    //end restore users
+
     //users role
     public function viewUsersRoleAdmin()
     {
-        $users = User::where('user_type', 1)->get(['id', 'first_name', 'last_name', 'email','user_type']); //admin
-        return response()->json($users);
+        $users = User::where('user_type', 1)
+            ->get(['id', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'user_type']);
+        return response()->json($users); //admin
     }
     public function viewUsersRoleAgent()
     {
-        $users = User::where('user_type', 2)->get(['id', 'first_name', 'last_name', 'email','user_type']); //agent
-        return response()->json($users);
+        $users = User::where('user_type', 2)
+            ->get(['id', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'user_type']);
+        return response()->json($users); //agent
     }
     public function viewUsersRoleClient()
     {
-        $users = User::where('user_type', 3)->get(['id', 'first_name', 'last_name', 'email','user_type']); //client
-        return response()->json($users);
+        $users = User::where('user_type', 3)
+            ->get(['id', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'user_type']);
+        return response()->json($users); //client
     }
 }

@@ -25,7 +25,7 @@ class PropertyController extends Controller
     public function index()
     {
         $property = Property::paginate(20);
-
+        
         return response()->json([
             "success" => true,
             "message" => "Property List",
@@ -122,4 +122,35 @@ class PropertyController extends Controller
             "data" => $property
         ]);
     }
+    //property restore
+    public function restore($id)
+    {
+        
+        Property::withTrashed()->find($id)->restore();
+        $property = Property::find($id);
+        return response()->json(['message' => "Property Successfully Restored.", 'data' => $property]);
+    }
+    //end Property restore
+    public function agentHasProperty(Request $request)
+    {
+        $user = $request->user(); 
+        $id  = $user->id;
+        $property = Property::where('user_id', $id)->get();
+
+        return response()->json([
+            "success" => true,
+            "message" => "Agent Property List",
+            "data" => $property,
+            
+        ]);
+    }
+    public function countProperty(){
+    
+        return response()->json([
+            'users' => User::query()
+                ->withCount('properties')
+                ->get()
+        ]);
+    }
+    
 }
