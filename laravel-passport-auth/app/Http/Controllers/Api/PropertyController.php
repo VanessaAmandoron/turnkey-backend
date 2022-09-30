@@ -131,4 +131,26 @@ class PropertyController extends Controller
         return response()->json(['message' => "Property Successfully Restored.", 'data' => $property]);
     }
     //end Property restore
+    public function agentHasProperty(Request $request)
+    {
+        $user = $request->user(); 
+        $id  = $user->id;
+        $property = Property::where('user_id', $id)->get();
+
+        return response()->json([
+            "success" => true,
+            "message" => "Agent Property List",
+            "data" => $property,
+            
+        ]);
+    }
+    public function countProperty(){
+    
+        return response()->json([
+            'users' => User::query()
+                ->withCount('properties')
+                ->get()
+        ]);
+    }
+    
 }

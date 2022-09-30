@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PropertyController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ImageController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +31,9 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('verify', [AuthController::class, 'VerifyEmail']);
     Route::apiResource('property', PropertyController::class);  
     
-    Route::post('property/restore/{id}', [PropertyController::class, 'restore']);  
+    Route::post('property/restore/{id}', [PropertyController::class, 'restore']);
+    Route::get('property-list', [PropertyController::class, 'agentHasProperty']);
+    Route::get('property-count', [PropertyController::class, 'countProperty']);
 
     Route::delete('users/delete/{id}', [AuthController::class, 'delete']);
     Route::post('users/restore/{id}', [AuthController::class, 'restore']);
