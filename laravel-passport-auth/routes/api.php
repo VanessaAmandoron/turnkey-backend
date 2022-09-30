@@ -32,8 +32,9 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::apiResource('property', PropertyController::class);  
     
     Route::post('property/restore/{id}', [PropertyController::class, 'restore']);
-    Route::get('property-list', [PropertyController::class, 'agentHasProperty']);
-    Route::get('property-count', [PropertyController::class, 'countProperty']);
+    Route::get('property-list', [PropertyController::class, 'AgentHasProperty']);
+    Route::get('property-count', [PropertyController::class, 'CountProperty']);
+    Route::get('search-property-title/{title}', [PropertyController::class, 'SearchProperty']);
 
     Route::delete('users/delete/{id}', [AuthController::class, 'delete']);
     Route::post('users/restore/{id}', [AuthController::class, 'restore']);
