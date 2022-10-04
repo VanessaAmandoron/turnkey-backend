@@ -25,7 +25,7 @@ class PropertyController extends Controller
     public function index()
     {
         $property = Property::paginate(20);
-        
+
         return response()->json([
             "success" => true,
             "message" => "Property List",
@@ -35,11 +35,11 @@ class PropertyController extends Controller
 
     public function store(StorePropertyRequest $request)
     {
-        $user = $request->user();       
-        
+        $user = $request->user();
+
         $input = $request->validated();
         $input["user_id"] = $user->id;
-        
+
 
         $property = Property::make($input);
         $user->properties()->save($property);
@@ -97,10 +97,10 @@ class PropertyController extends Controller
      */
     public function update(Request $request, Property $property)
     {
-       
- 
+
+
         $property->update($request->all());
- 
+
         return [
             "data" => $property,
             "msg" => "Property updated successfully"
@@ -125,7 +125,7 @@ class PropertyController extends Controller
     //property restore
     public function restore($id)
     {
-        
+
         Property::withTrashed()->find($id)->restore();
         $property = Property::find($id);
         return response()->json(['message' => "Property Successfully Restored.", 'data' => $property]);
@@ -133,7 +133,7 @@ class PropertyController extends Controller
     //end Property restore
     public function AgentHasProperty(Request $request)
     {
-        $user = $request->user(); 
+        $user = $request->user();
         $id  = $user->id;
         $property = Property::where('user_id', $id)->get();
 
@@ -141,11 +141,12 @@ class PropertyController extends Controller
             "success" => true,
             "message" => "Agent Property List",
             "data" => $property,
-            
+
         ]);
     }
-    public function CountProperty(){
-    
+    public function CountProperty()
+    {
+
         return response()->json([
             'users' => User::query()
                 ->withCount('properties')
@@ -155,7 +156,6 @@ class PropertyController extends Controller
 
     public function SearchProperty($title)
     {
-        return Property::where('title', $title)->get(); 
+        return Property::where('title', $title)->get();
     }
-    
 }
