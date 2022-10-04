@@ -130,9 +130,8 @@ class AuthController extends Controller
     //users role
     public function viewUsersRoleAdmin()
     {
-        $users = User::where('user_type', 1)
-            ->get(['id', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'user_type']);
-        return response()->json(
+        $users = User::where('user_type', 1)->paginate(20);
+            return response()->json(
             [
                 'message' => "List of admins.",
                 $users
@@ -141,8 +140,7 @@ class AuthController extends Controller
     }
     public function viewUsersRoleAgent()
     {
-        $users = User::where('user_type', 2)
-            ->get(['id', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'user_type']);
+        $users = User::where('user_type', 2)->paginate(20);
         return response()->json(
             [
                 'message' => "List of agents.",
@@ -152,12 +150,11 @@ class AuthController extends Controller
     }
     public function viewUsersRoleClient()
     {
-        $users = User::where('user_type', 3)
-            ->get(['id', 'first_name', 'last_name', 'email', 'phone_number', 'avatar', 'user_type']);
+        $users = User::where('user_type', 3)->paginate(20);
         return response()->json(
             [
-                'message' => "List of clients.",
-                $users
+                'message' => "List of clients.",$users,
+                
             ]
         ); //client
     }

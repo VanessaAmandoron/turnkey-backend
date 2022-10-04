@@ -135,7 +135,7 @@ class PropertyController extends Controller
     {
         $user = $request->user();
         $id  = $user->id;
-        $property = Property::where('user_id', $id)->get();
+        $property = Property::where('user_id', $id)->paginate(20);
 
         return response()->json([
             "success" => true,
@@ -146,7 +146,6 @@ class PropertyController extends Controller
     }
     public function CountProperty()
     {
-
         return response()->json([
             'users' => User::query()
                 ->withCount('properties')

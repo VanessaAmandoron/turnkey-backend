@@ -31,17 +31,17 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('verify', [AuthController::class, 'VerifyEmail']);
     Route::apiResource('property', PropertyController::class);  
     
-    Route::post('property/restore/{id}', [PropertyController::class, 'restore']);
+    Route::get('property/restore/{id}', [PropertyController::class, 'restore']);
     Route::get('property-list', [PropertyController::class, 'AgentHasProperty']);
     Route::get('property-count', [PropertyController::class, 'CountProperty']);
     Route::get('search-property-title/{title}', [PropertyController::class, 'SearchProperty']);
 
     Route::delete('users/delete/{id}', [AuthController::class, 'delete']);
-    Route::post('users/restore/{id}', [AuthController::class, 'restore']);
+    Route::get('users/restore/{id}', [AuthController::class, 'restore']);
     
-    Route::get('users-role/admin', [AuthController::class, 'viewUsersRoleAdmin']);//pending pani
-    Route::get('users-role/agent', [AuthController::class, 'viewUsersRoleAgent']);//pending pani
-    Route::get('users-role/client', [AuthController::class, 'viewUsersRoleClient']);//pending pani
+    Route::get('users-role/admin', [AuthController::class, 'viewUsersRoleAdmin']);
+    Route::get('users-role/agent', [AuthController::class, 'viewUsersRoleAgent']);
+    Route::get('users-role/client', [AuthController::class, 'viewUsersRoleClient']);
 });
 
 Route::post('image', [ImageController::class, 'imageStore']);
