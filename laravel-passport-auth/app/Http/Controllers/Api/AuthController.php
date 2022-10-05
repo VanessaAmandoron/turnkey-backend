@@ -139,14 +139,10 @@ class AuthController extends Controller
     }
     public function viewUsersRoleClient()
     {
-        $users = User::where('user_type', 3)->paginate(20);
+        $users = User::where('user_type', 3);
+        $result = $users->paginate(20);
         return response()->json(
-            [
-
-                "Total count: " => count($users),
-                'message' => "List of clients.",$users
-        
-            ]
+            array_merge($result->toArray(),['status'=> 'success'])
         ); //client
     }
     //end of users role
