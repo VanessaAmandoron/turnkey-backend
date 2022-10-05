@@ -24,6 +24,7 @@ class PropertyController extends Controller
      */
     public function index(Request $request)
     {
+        
         $property = Property::when($request->filled('search'),function($q)
         //search for admin
         use ($request){
@@ -32,9 +33,9 @@ class PropertyController extends Controller
             ->orWhere('address_1','LIKE',"%{$request -> input ('search')}%")
             ->orWhere('address_2','LIKE',"%{$request -> input ('search')}%")
             ->orWhere('price','LIKE',"%{$request -> input ('search')}%")
-            ->orWhere('area','LIKE',"%{$request -> input ('search')}%")
-            ;
+            ->orWhere('area','LIKE',"%{$request -> input ('search')}%");
         })->paginate(20);
+        //end search for admin
 
         return response()->json([
             "success" => true,
@@ -156,25 +157,25 @@ class PropertyController extends Controller
         ]);
     }
 
-    public function SearchProperty($title)
-    {
-        $search = Property::where('title', $title)->paginate(20);
-        $count = count($search);
+    // public function SearchProperty($title)
+    // {
+    //     $search = Property::where('title', $title)->paginate(20);
+    //     $count = count($search);
 
-        if ($count!= 0){
-        return response()->json([
-            "success" => true,
-            "message" => "Search Property Success!",
-            "Total count: " => count($search),
-            "data" => $search
+    //     if ($count!= 0){
+    //     return response()->json([
+    //         "success" => true,
+    //         "message" => "Search Property Success!",
+    //         "Total count: " => count($search),
+    //         "data" => $search
             
-        ]);
-    }else{
-        return response()->json([
-            "success" => false,
-            "message" =>'Property not found.']);
-    }
+    //     ]);
+    // }else{
+    //     return response()->json([
+    //         "success" => false,
+    //         "message" =>'Property not found.']);
+    // }
 
-    }
+    // }
 
 }

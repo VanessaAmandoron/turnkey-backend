@@ -26,34 +26,38 @@ class AuthController extends Controller
             'last_name' => 'required',
             'user_type' => 'required',
         ]);
-        if ($validator->fails()) {
+
+        //return response()->json(['ERROR' => 'Email Already Existing'], 401);
+       if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
+        } else {
+            $input = $request->all();
+            $input['password'] = bcrypt($input['password']);
+            $users = User::create($input);
+            $role = $request->user_type == 2 ? "agent" : "client";
+            $users->assignRole($role);
+            \Mail::to($request->email)->send(
+                new EmailVerification([
+                    "first_name" => $request->first_name,
+                    "last_name" => $request->last_name,
+                    "link" => env("APP_WEB_URL") . "/verify?token=" . $users->createToken('laravel-passport-auth')->accessToken
+                ])
+            );
+            return response()->json(['message' => "Email Verification Sent."], $this->successStatus);
         }
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $users = User::create($input);
-        $role = $request->user_type == 2 ? "agent" : "client";
-        $users->assignRole($role);
-        \Mail::to($request->email)->send(
-            new EmailVerification([
-                "first_name" => $request->first_name,
-                "last_name" => $request->last_name,
-                "link" => env("APP_WEB_URL") . "/verify?token=" . $users->createToken('laravel-passport-auth')->accessToken
-            ])
-        );
-        return response()->json(['message' => "Email Verification Sent."], $this->successStatus);
     }
 
     public function login()
     {
-        if (Auth::attempt(['email' => request('email'), 'password' => request('password'),])) {
+
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $users = Auth::user();
             $success['Token'] =  $users->createToken('laravel-passport-auth')->accessToken;
             $success['user_id'] = $users->id;
             $success['user_name'] = $users->first_name;
             $success['user_role'] = $users->user_type;
             return response()->json(["data" => $success], $this->successStatus);
-        } else {
+        }else {
             return response()->json(['ERROR' => 'Unauthorised'], 401);
         }
     }
@@ -134,7 +138,7 @@ class AuthController extends Controller
         $users = User::where('user_type', 2);
         $result = $users->paginate(20);
         return response()->json(
-            array_merge($result->toArray(),['status'=> 'success'])
+            array_merge($result->toArray(), ['status' => 'success'])
         );
     }
     public function viewUsersRoleClient()
@@ -142,7 +146,7 @@ class AuthController extends Controller
         $users = User::where('user_type', 3);
         $result = $users->paginate(20);
         return response()->json(
-            array_merge($result->toArray(),['status'=> 'success'])
+            array_merge($result->toArray(), ['status' => 'success'])
         ); //client
     }
     //end of users role

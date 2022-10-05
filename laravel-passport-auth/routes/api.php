@@ -33,7 +33,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     
     Route::get('property/restore/{id}', [PropertyController::class, 'restore']);
     Route::get('property-list', [PropertyController::class, 'AgentHasProperty']);
-    Route::get('search-property/{title}', [PropertyController::class, 'SearchProperty']);
+    //Route::get('search-property/{title}', [PropertyController::class, 'SearchProperty']); //deleted
 
     Route::delete('users/delete/{id}', [AuthController::class, 'delete']);
     Route::get('users/restore/{id}', [AuthController::class, 'restore']);
