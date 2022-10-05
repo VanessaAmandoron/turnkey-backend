@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PropertyController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ImageController;
+use App\Http\Controllers\Api\NewPasswordController;
 use App\Models\User;
 
 /*
@@ -46,3 +47,5 @@ Route::group(['middleware' => 'auth:api'], function(){
 
 Route::post('image', [ImageController::class, 'imageStore']);
 
+Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword']);
+Route::post('reset-password', [NewPasswordController::class, 'reset']);
