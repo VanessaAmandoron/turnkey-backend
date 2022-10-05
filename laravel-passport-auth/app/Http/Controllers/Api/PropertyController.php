@@ -140,21 +140,31 @@ class PropertyController extends Controller
         return response()->json([
             "success" => true,
             "message" => "Agent Property List",
-            "data" => $property,
+            "Property count total" => count($property),
+            "data" => $property,  
 
-        ]);
-    }
-    public function CountProperty()
-    {
-        return response()->json([
-            'users' => User::query()
-                ->withCount('properties')
-                ->get()
         ]);
     }
 
     public function SearchProperty($title)
-    {
-        return Property::where('title', $title)->get();
+    { 
+        $search = Property::where('title', $title)->paginate(20);
+        $count = count($search);
+
+        if ($count!= 0){
+        return response()->json([
+            "success" => true,
+            "message" => "Search Property Success!",
+            "Total count: " => count($search),
+            "data" => $search
+            
+        ]);
+    }else{
+        return response()->json([
+            "success" => false,
+            "message" =>'Property not found.']);
     }
+
+    }
+
 }

@@ -128,23 +128,15 @@ class AuthController extends Controller
     //end restore users
 
     //users role
-    public function viewUsersRoleAdmin()
-    {
-        $users = User::where('user_type', 1)->paginate(20);
-            return response()->json(
-            [
-                'message' => "List of admins.",
-                $users
-            ]
-        ); //admin
-    }
     public function viewUsersRoleAgent()
     {
-        $users = User::where('user_type', 2)->paginate(20);
+        $users = User::where('user_type', 2);
+        $usersAgent = $users ->paginate(20);
         return response()->json(
             [
-                'message' => "List of agents.",
-                $users
+                "Total count: " => count($usersAgent),
+                'message' => "List of agents.",$usersAgent,
+                       
             ]
         ); //agent
     }
@@ -153,9 +145,12 @@ class AuthController extends Controller
         $users = User::where('user_type', 3)->paginate(20);
         return response()->json(
             [
-                'message' => "List of clients.",$users,
-                
+
+                "Total count: " => count($users),
+                'message' => "List of clients.",$users
+        
             ]
         ); //client
     }
+    //end of users role
 }

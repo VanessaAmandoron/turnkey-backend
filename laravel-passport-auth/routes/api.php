@@ -33,13 +33,11 @@ Route::group(['middleware' => 'auth:api'], function(){
     
     Route::get('property/restore/{id}', [PropertyController::class, 'restore']);
     Route::get('property-list', [PropertyController::class, 'AgentHasProperty']);
-    Route::get('property-count', [PropertyController::class, 'CountProperty']);
     Route::get('search-property/{title}', [PropertyController::class, 'SearchProperty']);
 
     Route::delete('users/delete/{id}', [AuthController::class, 'delete']);
     Route::get('users/restore/{id}', [AuthController::class, 'restore']);
     
-    Route::get('users-role/admin', [AuthController::class, 'viewUsersRoleAdmin']);
     Route::get('users-role/agent', [AuthController::class, 'viewUsersRoleAgent']);
     Route::get('users-role/client', [AuthController::class, 'viewUsersRoleClient']);
 });
