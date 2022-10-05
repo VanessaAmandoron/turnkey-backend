@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\EmailVerification;
 use Illuminate\Http\Request;
 use App\Models\User;
+use GrahamCampbell\ResultType\Success;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
@@ -131,14 +132,10 @@ class AuthController extends Controller
     public function viewUsersRoleAgent()
     {
         $users = User::where('user_type', 2);
-        $usersAgent = $users ->paginate(20);
+        $result = $users->paginate(20);
         return response()->json(
-            [
-                "Total count: " => count($usersAgent),
-                'message' => "List of agents.",$usersAgent,
-                       
-            ]
-        ); //agent
+            array_merge($result->toArray(),['status'=> 'success'])
+        );
     }
     public function viewUsersRoleClient()
     {

@@ -22,9 +22,19 @@ class PropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $property = Property::paginate(20);
+        $property = Property::when($request->filled('search'),function($q)
+        //search for admin
+        use ($request){
+            $q
+            ->where('title','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('address_1','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('address_2','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('price','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('area','LIKE',"%{$request -> input ('search')}%")
+            ;
+        })->paginate(20);
 
         return response()->json([
             "success" => true,
@@ -147,7 +157,7 @@ class PropertyController extends Controller
     }
 
     public function SearchProperty($title)
-    { 
+    {
         $search = Property::where('title', $title)->paginate(20);
         $count = count($search);
 
