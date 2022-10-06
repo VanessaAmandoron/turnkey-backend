@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
 use Symfony\Component\Mime\Email;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Passport\Passport;
 
 class AuthController extends Controller
 {
@@ -43,10 +44,15 @@ class AuthController extends Controller
         return response()->json(['message' => "Email Verification Sent."], $this->successStatus);
     }
 
-    public function login()
+    public function login(Request $request)
     {
         if (Auth::attempt(['email' => request('email'), 'password' => request('password'),])) {
             $users = Auth::user();
+
+            if (!$request->remember_me) {
+                Passport::personalAccessTokensExpireIn(now()->addHour(24));
+            }
+
             $success['Token'] =  $users->createToken('laravel-passport-auth')->accessToken;
             $success['user_id'] = $users->id;
             $success['user_name'] = $users->first_name;
@@ -131,7 +137,7 @@ class AuthController extends Controller
     public function viewUsersRoleAdmin()
     {
         $users = User::where('user_type', 1)->paginate(20);
-            return response()->json(
+        return response()->json(
             [
                 'message' => "List of admins.",
                 $users
@@ -153,8 +159,8 @@ class AuthController extends Controller
         $users = User::where('user_type', 3)->paginate(20);
         return response()->json(
             [
-                'message' => "List of clients.",$users,
-                
+                'message' => "List of clients.", $users,
+
             ]
         ); //client
     }
