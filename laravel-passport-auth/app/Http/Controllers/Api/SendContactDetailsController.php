@@ -85,21 +85,10 @@ class SendContactDetailsController extends Controller
         //
     }
 
-    public function sendContact(Request $request){
-        $user = $request->user();
+    public function sendContact($id){
 
-        $input = $request->validated();
-        $input["user_id"] = $user->id;
-
-
-        $property = Property::make($input);
-        $user->properties()->save($property);
-        $property->refresh();
-
-        return response()->json([
-            "success" => true,
-            "message" => "Property created successfully.",
-            "data" => $property
-        ]);
+        Property::withTrashed()->find($id);
+        $property = Property::find($id);
+        return response()->json(['message' => "Property Successfully Restored.", 'data' => $property]);
     }
 }
