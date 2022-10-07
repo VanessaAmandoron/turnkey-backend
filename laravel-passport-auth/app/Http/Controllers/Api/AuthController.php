@@ -69,7 +69,7 @@ class AuthController extends Controller
     }
     public function index()
     {
-        $users = User::paginate(20);
+        $users = User::withTrashed()->orderBy('id')->paginate(20);
         return response()->json($users);
     }
     public function VerifyEmail()
