@@ -22,15 +22,25 @@ class PropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $property = Property::paginate(20);
+        
+        $property = Property::when($request->filled('search'),function($q)
+        //search for admin
+        use ($request){
+            $q
+            ->where('title','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('address_1','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('address_2','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('price','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('area','LIKE',"%{$request -> input ('search')}%");
+        })->paginate(20);
+        //end search for admin
 
-        return response()->json([
-            "success" => true,
-            "message" => "Property List",
-            "data" => $property
-        ]);
+        return response()->json(
+            array_merge($property->toArray(), ['status' => 'success'])
+        );
+
     }
 
     public function store(StorePropertyRequest $request)
@@ -140,21 +150,31 @@ class PropertyController extends Controller
         return response()->json([
             "success" => true,
             "message" => "Agent Property List",
-            "data" => $property,
+            "Property count total" => count($property),
+            "data" => $property,  
 
         ]);
     }
-    public function CountProperty()
-    {
-        return response()->json([
-            'users' => User::query()
-                ->withCount('properties')
-                ->get()
-        ]);
-    }
 
-    public function SearchProperty($title)
-    {
-        return Property::where('title', $title)->get();
-    }
+    // public function SearchProperty($title)
+    // {
+    //     $search = Property::where('title', $title)->paginate(20);
+    //     $count = count($search);
+
+    //     if ($count!= 0){
+    //     return response()->json([
+    //         "success" => true,
+    //         "message" => "Search Property Success!",
+    //         "Total count: " => count($search),
+    //         "data" => $search
+            
+    //     ]);
+    // }else{
+    //     return response()->json([
+    //         "success" => false,
+    //         "message" =>'Property not found.']);
+    // }
+
+    // }
+
 }

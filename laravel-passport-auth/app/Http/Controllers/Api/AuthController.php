@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\EmailVerification;
 use Illuminate\Http\Request;
 use App\Models\User;
+use GrahamCampbell\ResultType\Success;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
@@ -27,27 +28,31 @@ class AuthController extends Controller
             'user_type' => 'required',
             'profile_picture' => 'nullable',
         ]);
-        if ($validator->fails()) {
+
+        //return response()->json(['ERROR' => 'Email Already Existing'], 401);
+       if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
+        } else {
+            $input = $request->all();
+            $input['password'] = bcrypt($input['password']);
+            $users = User::create($input);
+            $role = $request->user_type == 2 ? "agent" : "client";
+            $users->assignRole($role);
+            \Mail::to($request->email)->send(
+                new EmailVerification([
+                    "first_name" => $request->first_name,
+                    "last_name" => $request->last_name,
+                    "link" => env("APP_WEB_URL") . "/verify?token=" . $users->createToken('laravel-passport-auth')->accessToken
+                ])
+            );
+            return response()->json(['message' => "Email Verification Sent."], $this->successStatus);
         }
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $users = User::create($input);
-        $role = $request->user_type == 2 ? "agent" : "client";
-        $users->assignRole($role);
-        \Mail::to($request->email)->send(
-            new EmailVerification([
-                "first_name" => $request->first_name,
-                "last_name" => $request->last_name,
-                "link" => env("APP_WEB_URL") . "/verify?token=" . $users->createToken('laravel-passport-auth')->accessToken
-            ])
-        );
-        return response()->json(['message' => "Email Verification Sent."], $this->successStatus);
     }
 
     public function login(Request $request)
     {
-        if (Auth::attempt(['email' => request('email'), 'password' => request('password'),])) {
+
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $users = Auth::user();
 
             if (!$request->remember_me) {
@@ -59,7 +64,7 @@ class AuthController extends Controller
             $success['user_name'] = $users->first_name;
             $success['user_role'] = $users->user_type;
             return response()->json(["data" => $success], $this->successStatus);
-        } else {
+        }else {
             return response()->json(['ERROR' => 'Unauthorised'], 401);
         }
     }
@@ -71,7 +76,7 @@ class AuthController extends Controller
     }
     public function index()
     {
-        $users = User::paginate(20);
+        $users = User::withTrashed()->orderBy('id')->paginate(20);
         return response()->json($users);
     }
     public function VerifyEmail()
@@ -135,34 +140,26 @@ class AuthController extends Controller
     //end restore users
 
     //users role
-    public function viewUsersRoleAdmin()
-    {
-        $users = User::where('user_type', 1)->paginate(20);
-        return response()->json(
-            [
-                'message' => "List of admins.",
-                $users
-            ]
-        ); //admin
-    }
+
     public function viewUsersRoleAgent()
     {
-        $users = User::where('user_type', 2)->paginate(20);
+        $users = User::where('user_type', 2);
+        $result = $users->paginate(20);
         return response()->json(
-            [
-                'message' => "List of agents.",
-                $users
-            ]
-        ); //agent
+            array_merge($result->toArray(), ['status' => 'success'])
+        );
     }
     public function viewUsersRoleClient()
     {
-        $users = User::where('user_type', 3)->paginate(20);
+        $users = User::where('user_type', 3);
+        $result = $users->paginate(20);
         return response()->json(
+            array_merge($result->toArray(), ['status' => 'success'])
             [
                 'message' => "List of clients.", $users,
-
             ]
+
         ); //client
     }
+    //end of users role
 }
