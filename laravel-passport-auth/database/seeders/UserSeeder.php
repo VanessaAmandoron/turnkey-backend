@@ -29,11 +29,11 @@ class UserSeeder extends Seeder
         }
     );
 
-    // User::factory()->count(3)
-    //     ->create()
-    //     ->each(function ($user){
-    //         $user->assignRole('client');
-    //     }
-    // );
+    User::factory()->count(20)
+        ->create()
+        ->each(function ($user){
+            $user->assignRole('client');
+        }
+    );
     }
 }
