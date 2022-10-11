@@ -22,12 +22,12 @@ class UserSeeder extends Seeder
         }
     );
 
-    // User::factory()->count(2)
-    //     ->create()
-    //     ->each(function ($user){
-    //         $user->assignRole('agent');
-    //     }
-    // );
+    User::factory()->count(10)->hasProperties(5)
+        ->create()
+        ->each(function ($user){
+            $user->assignRole('agent');
+        }
+    );
 
     // User::factory()->count(3)
     //     ->create()
