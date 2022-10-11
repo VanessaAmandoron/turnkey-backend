@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Passport\HasApiTokens;
+use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable implements MustVerifyEMail
 {
@@ -28,7 +29,7 @@ class User extends Authenticatable implements MustVerifyEMail
         'last_name',
         'phone_number',
         'user_type',
-        'avatar'
+        'profile_picture'
     ];
 
     /**
@@ -62,5 +63,14 @@ class User extends Authenticatable implements MustVerifyEMail
         return $this->hasMany(ContactAgent::class);
     }
 
+    public function sendPasswordResetNotification($token)
+    {
+
+        $url = 'http://127.0.0.1:5173/reset-password?token=' . $token;
+
+        $this->notify(new ResetPasswordNotification($url));
+    }
+
+    
 
 }

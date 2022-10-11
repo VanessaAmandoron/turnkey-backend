@@ -6,8 +6,7 @@ use App\Http\Controllers\Api\PropertyController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\SendContactDetailsController;
-use App\Models\SendContactDetails;
-use App\Models\User;
+use App\Http\Controllers\Api\NewPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,3 +58,5 @@ Route::group(['middleware' => ['auth:api', 'role:agent']], function(){ //'role:a
 });
 Route::post('image', [ImageController::class, 'imageStore']);
 
+Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword']);
+Route::post('reset-password', [NewPasswordController::class, 'reset']);

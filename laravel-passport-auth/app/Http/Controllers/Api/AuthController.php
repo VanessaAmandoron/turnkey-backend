@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
 use Symfony\Component\Mime\Email;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Passport\Passport;
 
 class AuthController extends Controller
 {
@@ -25,6 +26,7 @@ class AuthController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'user_type' => 'required',
+            'profile_picture' => 'nullable',
         ]);
 
         //return response()->json(['ERROR' => 'Email Already Existing'], 401);
@@ -47,11 +49,16 @@ class AuthController extends Controller
         }
     }
 
-    public function login()
+    public function login(Request $request)
     {
 
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $users = Auth::user();
+
+            if (!$request->remember_me) {
+                Passport::personalAccessTokensExpireIn(now()->addHour(24));
+            }
+
             $success['Token'] =  $users->createToken('laravel-passport-auth')->accessToken;
             $success['user_id'] = $users->id;
             $success['user_name'] = $users->first_name;
@@ -101,10 +108,10 @@ class AuthController extends Controller
                 return response()->json(['status => false', 'message' => $error, 'data' => []], 422);
             } else {
                 $user = User::find($request->user()->id);
-                if ($request->avatar && $request->avatar->isValid()) {
-                    $filename = time() . '.' . $request->avatar->extenction();
+                if ($request->profile_picture && $request->profile_picture->isValid()) {
+                    $filename = time() . '.' . $request->profile_picture->extenction();
                     $path = "public/images/$filename";
-                    $user->avatar = $path;
+                    $user->profile_picture = $path;
                 }
 
                 $user->update($request->all());
@@ -133,6 +140,7 @@ class AuthController extends Controller
     //end restore users
 
     //users role
+
     public function viewUsersRoleAgent()
     {
         $users = User::where('user_type', 2);
@@ -147,6 +155,10 @@ class AuthController extends Controller
         $result = $users->paginate(20);
         return response()->json(
             array_merge($result->toArray(), ['status' => 'success'])
+            [
+                'message' => "List of clients.", $users,
+            ]
+
         ); //client
     }
     //end of users role

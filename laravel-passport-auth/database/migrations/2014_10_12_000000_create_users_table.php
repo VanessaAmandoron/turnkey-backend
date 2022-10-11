@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('phone_number');
             $table->unsignedTinyInteger('user_type');
-            $table->text('avatar')->nullable();
+            $table->text('profile_picture')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
