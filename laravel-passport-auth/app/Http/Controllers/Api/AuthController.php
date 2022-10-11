@@ -25,6 +25,7 @@ class AuthController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'user_type' => 'required',
+            'profile_picture' => 'nullable',
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
@@ -102,10 +103,10 @@ class AuthController extends Controller
                 return response()->json(['status => false', 'message' => $error, 'data' => []], 422);
             } else {
                 $user = User::find($request->user()->id);
-                if ($request->avatar && $request->avatar->isValid()) {
-                    $filename = time() . '.' . $request->avatar->extenction();
+                if ($request->profile_picture && $request->profile_picture->isValid()) {
+                    $filename = time() . '.' . $request->profile_picture->extenction();
                     $path = "public/images/$filename";
-                    $user->avatar = $path;
+                    $user->profile_picture = $path;
                 }
 
                 $user->update($request->all());
