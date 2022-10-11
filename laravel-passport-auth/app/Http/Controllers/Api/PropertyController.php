@@ -37,11 +37,10 @@ class PropertyController extends Controller
         })->paginate(20);
         //end search for admin
 
-        return response()->json([
-            "success" => true,
-            "message" => "Property List",
-            "data" => $property
-        ]);
+        return response()->json(
+            array_merge($property->toArray(), ['status' => 'success'])
+        );
+
     }
 
     public function store(StorePropertyRequest $request)

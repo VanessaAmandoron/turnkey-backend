@@ -18,15 +18,19 @@ class CreateSendContactDetailsTable extends Migration
     {
         Schema::create('send_contact_details', function (Blueprint $table) {
             $table->increments('id');
-            $table->foreignIdFor(User::class)->constrained();
-            $table->integer('agent_id');
-            //$table->integer('property_id');
+
+            $table->bigInteger('client_id')->unsigned()->index();
+            $table->foreign('client_id')->references('id')->on('users');
+            $table->bigInteger('agent_id')->unsigned()->index();
+            $table->foreign('agent_id')->references('user_id')->on('properties');
+            
             $table->foreignIdFor(Property::class)->constrained();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
             $table->string('phone_number');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

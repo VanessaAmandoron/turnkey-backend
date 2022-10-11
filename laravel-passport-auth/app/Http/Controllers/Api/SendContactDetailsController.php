@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Property;
+use App\Models\SendContactDetails;
+use Illuminate\Support\Facades\Auth;
 
 class SendContactDetailsController extends Controller
 {
@@ -24,9 +26,24 @@ class SendContactDetailsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create($id)
+    {  
+        $data = new SendContactDetails();
+
+        $data -> client_id = Auth::user()->id;//client_id
+        $data -> agent_id = Property::find($id)->user_id;//agent_id
+        $data ->property_id = Property::find($id)->id;//property_id
+        $data ->first_name = Auth::user()->first_name;
+        $data -> last_name = Auth::user()->last_name;
+        $data -> email = Auth::user()->email;
+        $data -> phone_number = Auth::user()->phone_number;
+        
+        $data -> save();
+        //$result = SendContactDetails::create($data);
+        //return response()->json([$data,'status' => 'success']);
+        return response()->json(
+            array_merge($data->toArray(), ['status' => 'success'])
+        );
     }
 
     /**
@@ -37,7 +54,7 @@ class SendContactDetailsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
