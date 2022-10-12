@@ -155,11 +155,7 @@ class AuthController extends Controller
         $result = $users->paginate(20);
         return response()->json(
             array_merge($result->toArray(), ['status' => 'success'])
-            [
-                'message' => "List of clients.", $users,
-            ]
-
-        ); //client
+        );//client
     }
     //end of users role
 }
