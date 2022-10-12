@@ -6,13 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Mail\EmailVerification;
 use Illuminate\Http\Request;
 use App\Models\User;
-use GrahamCampbell\ResultType\Success;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
 use Symfony\Component\Mime\Email;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Passport\Passport;
 
 class AuthController extends Controller
 {
@@ -26,45 +24,35 @@ class AuthController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'user_type' => 'required',
-            'profile_picture' => 'nullable',
         ]);
-
-        //return response()->json(['ERROR' => 'Email Already Existing'], 401);
-       if ($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
-        } else {
-            $input = $request->all();
-            $input['password'] = bcrypt($input['password']);
-            $users = User::create($input);
-            $role = $request->user_type == 2 ? "agent" : "client";
-            $users->assignRole($role);
-            \Mail::to($request->email)->send(
-                new EmailVerification([
-                    "first_name" => $request->first_name,
-                    "last_name" => $request->last_name,
-                    "link" => env("APP_WEB_URL") . "/verify?token=" . $users->createToken('laravel-passport-auth')->accessToken
-                ])
-            );
-            return response()->json(['message' => "Email Verification Sent."], $this->successStatus);
         }
+        $input = $request->except('user_role');
+        $input['password'] = bcrypt($input['password']);
+        $users = User::create($input);
+        $role = $request->user_type == 2 ? "agent" : "client";
+        $users->assignRole($role);
+        \Mail::to($request->email)->send(
+            new EmailVerification([
+                "first_name" => $request->first_name,
+                "last_name" => $request->last_name,
+                "link" => env("APP_WEB_URL") . "/verify?token=" . $users->createToken('laravel-passport-auth')->accessToken
+            ])
+        );
+        return response()->json(['message' => "Email Verification Sent."], $this->successStatus);
     }
 
-    public function login(Request $request)
+    public function login()
     {
-
-        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password'),])) {
             $users = Auth::user();
-
-            if (!$request->remember_me) {
-                Passport::personalAccessTokensExpireIn(now()->addHour(24));
-            }
-
             $success['Token'] =  $users->createToken('laravel-passport-auth')->accessToken;
             $success['user_id'] = $users->id;
             $success['user_name'] = $users->first_name;
-            $success['user_role'] = $users->user_type;
+            $success['user_role'] = $users->getRoleNames();
             return response()->json(["data" => $success], $this->successStatus);
-        }else {
+        } else {
             return response()->json(['ERROR' => 'Unauthorised'], 401);
         }
     }
@@ -76,7 +64,7 @@ class AuthController extends Controller
     }
     public function index()
     {
-        $users = User::withTrashed()->orderBy('id')->paginate(20);
+        $users = User::paginate(5);
         return response()->json($users);
     }
     public function VerifyEmail()
@@ -108,10 +96,10 @@ class AuthController extends Controller
                 return response()->json(['status => false', 'message' => $error, 'data' => []], 422);
             } else {
                 $user = User::find($request->user()->id);
-                if ($request->profile_picture && $request->profile_picture->isValid()) {
-                    $filename = time() . '.' . $request->profile_picture->extenction();
+                if ($request->avatar && $request->avatar->isValid()) {
+                    $filename = time() . '.' . $request->avatar->extenction();
                     $path = "public/images/$filename";
-                    $user->profile_picture = $path;
+                    $user->avatar = $path;
                 }
 
                 $user->update($request->all());
@@ -122,40 +110,20 @@ class AuthController extends Controller
         }
     }
 
-    //start delete users
-    public function delete($id)
-    {
-        $users = User::find($id);
-        $users->delete();
-        return response()->json(['message' => "User Successfully Deleted.", 'data' => $users]);
-    }
-    //end delete users
-    //start restore users
-    public function restore($id)
-    {
-        User::withTrashed()->find($id)->restore();
-        $users = User::find($id);
-        return response()->json(['message' => "User Successfully Restored.", 'data' => $users]);
-    }
-    //end restore users
-
     //users role
-
+    public function viewUsersRoleAdmin()
+    {
+        $users = User::where('user_type', 1)->get(['id', 'first_name', 'last_name', 'email','user_type']); //admin
+        return response()->json($users);
+    }
     public function viewUsersRoleAgent()
     {
-        $users = User::where('user_type', 2);
-        $result = $users->paginate(20);
-        return response()->json(
-            array_merge($result->toArray(), ['status' => 'success'])
-        );
+        $users = User::where('user_type', 2)->get(['id', 'first_name', 'last_name', 'email','user_type']); //agent
+        return response()->json($users);
     }
     public function viewUsersRoleClient()
     {
-        $users = User::where('user_type', 3);
-        $result = $users->paginate(20);
-        return response()->json(
-            array_merge($result->toArray(), ['status' => 'success'])
-        );//client
+        $users = User::where('user_type', 3)->get(['id', 'first_name', 'last_name', 'email','user_type']); //client
+        return response()->json($users);
     }
-    //end of users role
 }
