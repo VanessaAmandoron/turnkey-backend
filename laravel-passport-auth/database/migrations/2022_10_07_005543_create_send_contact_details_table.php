@@ -24,11 +24,11 @@ class CreateSendContactDetailsTable extends Migration
             $table->bigInteger('agent_id')->unsigned()->index();
             $table->foreign('agent_id')->references('user_id')->on('properties');
             $table->foreignIdFor(Property::class)->constrained();
-            $table->string('property_title')->unique();
-            // $table->string('first_name');
-            // $table->string('last_name');
-            // $table->string('email');
-            // $table->string('phone_number');
+            $table->string('property_title')->references('title')->on('properties');
+            $table->string('first_name')->references('first_name')->on('users');
+            $table->string('last_name')->references('last_name')->on('users');
+            $table->string('email')->references('email')->on('users');
+            $table->string('phone_number')->references('phone_number')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });
