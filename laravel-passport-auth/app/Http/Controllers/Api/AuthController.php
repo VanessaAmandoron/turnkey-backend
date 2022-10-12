@@ -42,7 +42,7 @@ class AuthController extends Controller
         );
         return response()->json(['message' => "Email Verification Sent."], $this->successStatus);
     }
-
+s
     public function login()
     {
         if (Auth::attempt(['email' => request('email'), 'password' => request('password'),])) {
