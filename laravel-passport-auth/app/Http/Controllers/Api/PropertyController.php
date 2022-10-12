@@ -156,25 +156,5 @@ class PropertyController extends Controller
         ]);
     }
 
-    // public function SearchProperty($title)
-    // {
-    //     $search = Property::where('title', $title)->paginate(20);
-    //     $count = count($search);
-
-    //     if ($count!= 0){
-    //     return response()->json([
-    //         "success" => true,
-    //         "message" => "Search Property Success!",
-    //         "Total count: " => count($search),
-    //         "data" => $search
-            
-    //     ]);
-    // }else{
-    //     return response()->json([
-    //         "success" => false,
-    //         "message" =>'Property not found.']);
-    // }
-
-    // }
 
 }

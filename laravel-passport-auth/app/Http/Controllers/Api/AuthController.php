@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Response;
-use Symfony\Component\Mime\Email;
-use Illuminate\Support\Facades\Storage;
+
 
 class AuthController extends Controller
 {
@@ -109,21 +107,48 @@ class AuthController extends Controller
             return response()->json(['status => false', 'message' => $e->getMessage(), 'data' => []], 500);
         }
     }
-
-    //users role
-    public function viewUsersRoleAdmin()
+    public function UserListForAdmin()
     {
-        $users = User::where('user_type', 1)->get(['id', 'first_name', 'last_name', 'email','user_type']); //admin
+        $users = User::withTrashed()->orderBy('id');
+        $result = $users->paginate(20);
+        return response()->json($result);
+    }
+    public function GetUser($id)
+    {
+        $users = User::find($id);
         return response()->json($users);
     }
+    //start delete users
+    public function delete($id)
+    {
+        $users = User::find($id);
+        $users->delete();
+        return response()->json(['message' => "User Successfully Deleted.", 'data' => $users]);
+    }
+    //end delete users
+    //start restore users
+    public function restore($id)
+    {
+        User::withTrashed()->find($id)->restore();
+        $users = User::find($id);
+        return response()->json(['message' => "User Successfully Restored.", 'data' => $users]);
+    }
+    //end restore users
+    //users role
     public function viewUsersRoleAgent()
     {
-        $users = User::where('user_type', 2)->get(['id', 'first_name', 'last_name', 'email','user_type']); //agent
-        return response()->json($users);
+        $users = User::where('user_type', 2);
+        $result = $users->paginate(20);
+        return response()->json(
+            array_merge($result->toArray(), ['status' => 'success'])
+        );
     }
     public function viewUsersRoleClient()
     {
-        $users = User::where('user_type', 3)->get(['id', 'first_name', 'last_name', 'email','user_type']); //client
-        return response()->json($users);
+        $users = User::where('user_type', 3);
+        $result = $users->paginate(20);
+        return response()->json(
+            array_merge($result->toArray(), ['status' => 'success'])
+        ); //client
     }
 }
