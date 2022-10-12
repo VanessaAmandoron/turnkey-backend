@@ -32,8 +32,8 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('verify', [AuthController::class, 'VerifyEmail']);
     Route::get('users/{id}', [AuthController::class, 'GetUser']);
 
-    Route::get('property/restore/{id}', [PropertyController::class, 'restore']);//admin
-
+    Route::get('property/restore/{id}', [PropertyController::class, 'restore']);//admin||agent
+    Route::delete('property/delete/{id}', [PropertyController::class, 'delete']);//admin||agent
     //Route::get('search-property/{title}', [PropertyController::class, 'SearchProperty']); //deleted
     Route::get('admin/users-list', [AuthController::class, 'UserListForAdmin']);
     Route::delete('users/delete/{id}', [AuthController::class, 'delete']);
@@ -44,7 +44,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('property-list', [PropertyController::class, 'AgentHasProperty']);
     Route::get('property/{id}', [PropertyController::class, 'show']);
     Route::get('agent/contacts', [SendContactDetailsController::class, 'index']);
-    Route::post('property/contact/{id}', [SendContactDetailsController::class, 'create']);//new
+    Route::get('property/contact/{id}', [SendContactDetailsController::class, 'create']);//new
     
     Route::get('property', [PropertyController::class, 'index']);
     Route::post('property-create', [PropertyController::class, 'store']);

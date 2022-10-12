@@ -37,7 +37,7 @@ class SendContactDetailsController extends Controller
         $data->client_id = Auth::user()->id; //client_id
         $data->agent_id = Property::find($id)->user_id; //agent_id
         $data->property_id = Property::find($id)->id; //property_id
-        // $data->property_title = Property::find($id)->title; //property_id
+        $data->property_title = Property::find($id)->title; //property_title
         // $data->first_name = Auth::user()->first_name;//client_name
         // $data->last_name = Auth::user()->last_name;//client_name
         // $data->email = Auth::user()->email;//client_email
