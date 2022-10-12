@@ -30,12 +30,12 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::put('profile/edit', [AuthController::class, 'EditProfile']);
     Route::get('users', [AuthController::class, 'index']);
     Route::post('verify', [AuthController::class, 'VerifyEmail']);
-    
+    Route::get('users/{id}', [AuthController::class, 'GetUser']);
 
     Route::get('property/restore/{id}', [PropertyController::class, 'restore']);//admin
 
     //Route::get('search-property/{title}', [PropertyController::class, 'SearchProperty']); //deleted
-
+    Route::get('admin/users-list', [AuthController::class, 'UserListForAdmin']);
     Route::delete('users/delete/{id}', [AuthController::class, 'delete']);
     Route::get('users/restore/{id}', [AuthController::class, 'restore']);
     
