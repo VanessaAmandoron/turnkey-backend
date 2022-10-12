@@ -16,7 +16,7 @@ class SendContactDetailsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index()//For agent
     {
         $agent_id = Auth::user()->id;
         $result = SendContactDetails::where('agent_id', $agent_id);
@@ -31,17 +31,17 @@ class SendContactDetailsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create($id)//for client
     {
         $data = new SendContactDetails();
         $data->client_id = Auth::user()->id; //client_id
         $data->agent_id = Property::find($id)->user_id; //agent_id
         $data->property_id = Property::find($id)->id; //property_id
         $data->property_title = Property::find($id)->title; //property_id
-        $data->first_name = Auth::user()->first_name;
-        $data->last_name = Auth::user()->last_name;
-        $data->email = Auth::user()->email;
-        $data->phone_number = Auth::user()->phone_number;
+        // $data->first_name = Auth::user()->first_name;//client_name
+        // $data->last_name = Auth::user()->last_name;//client_name
+        // $data->email = Auth::user()->email;//client_email
+        // $data->phone_number = Auth::user()->phone_number;//client_phone_number
 
         $data->save();
         return response()->json(
