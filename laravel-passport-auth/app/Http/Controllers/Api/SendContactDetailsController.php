@@ -18,7 +18,12 @@ class SendContactDetailsController extends Controller
      */
     public function index()
     {
-        //
+        $agent_id = Auth::user()->id;
+        $result = SendContactDetails::where('agent_id', $agent_id);
+        $result =  $result->paginate(20);
+        return response()->json(
+            array_merge($result->toArray(), ['status' => 'success'])
+        );
     }
 
     /**
@@ -27,20 +32,17 @@ class SendContactDetailsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create($id)
-    {  
+    {
         $data = new SendContactDetails();
+        $data->client_id = Auth::user()->id; //client_id
+        $data->agent_id = Property::find($id)->user_id; //agent_id
+        $data->property_id = Property::find($id)->id; //property_id
+        $data->first_name = Auth::user()->first_name;
+        $data->last_name = Auth::user()->last_name;
+        $data->email = Auth::user()->email;
+        $data->phone_number = Auth::user()->phone_number;
 
-        $data -> client_id = Auth::user()->id;//client_id
-        $data -> agent_id = Property::find($id)->user_id;//agent_id
-        $data ->property_id = Property::find($id)->id;//property_id
-        $data ->first_name = Auth::user()->first_name;
-        $data -> last_name = Auth::user()->last_name;
-        $data -> email = Auth::user()->email;
-        $data -> phone_number = Auth::user()->phone_number;
-        
-        $data -> save();
-        //$result = SendContactDetails::create($data);
-        //return response()->json([$data,'status' => 'success']);
+        $data->save();
         return response()->json(
             array_merge($data->toArray(), ['status' => 'success'])
         );
@@ -54,7 +56,6 @@ class SendContactDetailsController extends Controller
      */
     public function store(Request $request)
     {
-        
     }
 
     /**
@@ -102,7 +103,8 @@ class SendContactDetailsController extends Controller
         //
     }
 
-    public function sendContact($id){
+    public function sendContact($id)
+    {
 
         Property::withTrashed()->find($id);
         $property = Property::find($id);
