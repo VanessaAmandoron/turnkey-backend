@@ -23,8 +23,8 @@ class CreateSendContactDetailsTable extends Migration
             $table->foreign('client_id')->references('id')->on('users');
             $table->bigInteger('agent_id')->unsigned()->index();
             $table->foreign('agent_id')->references('user_id')->on('properties');
-            $table->string('property_title')->unique();
             $table->foreignIdFor(Property::class)->constrained();
+            // $table->string('property_title')->unique();
             // $table->string('first_name');
             // $table->string('last_name');
             // $table->string('email');
