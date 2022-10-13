@@ -140,7 +140,7 @@ class AuthController extends Controller
     //users role
     public function viewUsersRoleAgent()
     {
-        $users = User::whereHas(
+        $users = User::withTrashed()->whereHas(
             'roles', function($q){
                 $q->where('role_id', '2');
             }
@@ -149,7 +149,7 @@ class AuthController extends Controller
     }
     public function viewUsersRoleClient()
     {
-        $users = User::whereHas(
+        $users = User::withTrashed()->whereHas(
             'roles', function($q){
                 $q->where('role_id', '3');
             }
