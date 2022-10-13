@@ -144,7 +144,8 @@ class PropertyController extends Controller
         $property->delete();
         return response()->json(
             array_merge($property->toArray(), ['status' => 'success'])
-        );    }
+        );    
+    }
     //property restore
     public function restore($id)
     {

@@ -44,8 +44,11 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('users-role/client', [AuthController::class, 'viewUsersRoleClient']);
     Route::get('property-list', [PropertyController::class, 'AgentHasProperty']);
     Route::get('property/{id}', [PropertyController::class, 'show']);
-    Route::get('agent/contacts', [SendContactDetailsController::class, 'index']);
-    Route::get('property/contact/{id}', [SendContactDetailsController::class, 'create']);//new
+    Route::get('agent/contacts/history', [SendContactDetailsController::class, 'AgentTransactionHistory']);//for agentTransactionHistory
+    Route::get('admin/contacts/history', [SendContactDetailsController::class, 'AdminTransactionHistory']);//for adminTransactionHistory
+    Route::get('agent/contacts', [SendContactDetailsController::class, 'index']);//conatact list
+    Route::get('property/contact/{id}', [SendContactDetailsController::class, 'create']);//send details to table
+    Route::delete('agent/contacts/delete/{id}', [SendContactDetailsController::class, 'destroy']);//new
     
     Route::get('property', [PropertyController::class, 'index']);
     Route::post('property-create', [PropertyController::class, 'store']);
