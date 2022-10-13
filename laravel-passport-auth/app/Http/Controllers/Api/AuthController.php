@@ -112,7 +112,7 @@ class AuthController extends Controller
         $roles = ['3','2'];
         $users = User::withTrashed()->whereHas('roles', static function ($query) use ($roles) {
             return $query->whereIn('role_id', $roles);
-        })->get();
+        })->paginate(20);
         
         return response()->json($users);
     }
@@ -145,9 +145,7 @@ class AuthController extends Controller
                 $q->where('role_id', '2');
             }
         )->paginate(20);
-        return response()->json(
-            array_merge($users->toArray(), ['status' => 'success'])
-        );
+        return response()->json($users);
     }
     public function viewUsersRoleClient()
     {
