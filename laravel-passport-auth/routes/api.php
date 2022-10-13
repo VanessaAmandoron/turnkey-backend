@@ -27,7 +27,7 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => 'auth:api'], function(){
     Route::get('profile', [AuthController::class, 'UserDetails']);
-    Route::put('profile/edit', [AuthController::class, 'EditProfile']);
+    Route::put('profile-edit', [AuthController::class, 'EditProfile']);
     Route::get('users', [AuthController::class, 'index']);
     Route::post('verify', [AuthController::class, 'VerifyEmail']);
     Route::get('users/{id}', [AuthController::class, 'GetUser']);

@@ -86,7 +86,7 @@ class AuthController extends Controller
         try {
             $validator = Validator::make($request->all(), [
 
-                'profile_picture' => 'nullable|image',
+                'profile_picture' => 'nullable',
             ]);
 
             if ($validator->fails()) {
