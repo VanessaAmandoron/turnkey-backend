@@ -159,13 +159,9 @@ class PropertyController extends Controller
         $id  = $user->id;
         $property = Property::where('user_id', $id)->paginate(20);
 
-        return response()->json([
-            "success" => true,
-            "message" => "Agent Property List",
-            "Property count total" => count($property),
-            "data" => $property,  
-
-        ]);
+        return response()->json(
+            array_merge($property->toArray(), ['status' => 'success'])
+        ); 
     }
 
 

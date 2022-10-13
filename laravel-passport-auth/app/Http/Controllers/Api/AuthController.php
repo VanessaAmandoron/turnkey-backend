@@ -109,9 +109,12 @@ class AuthController extends Controller
     }
     public function UserListForAdmin()
     {
-        $users = User::withTrashed()->orderBy('id');
-        $result = $users->paginate(20);
-        return response()->json($result);
+        $roles = ['3','2'];
+        $users = User::withTrashed()->whereHas('roles', static function ($query) use ($roles) {
+            return $query->whereIn('role_id', $roles);
+        })->get();
+        
+        return response()->json($users);
     }
     public function GetUser($id)
     {
@@ -137,18 +140,22 @@ class AuthController extends Controller
     //users role
     public function viewUsersRoleAgent()
     {
-        $users = User::where('user_type', 2);
-        $result = $users->paginate(20);
+        $users = User::whereHas(
+            'roles', function($q){
+                $q->where('role_id', '2');
+            }
+        )->paginate(20);
         return response()->json(
-            array_merge($result->toArray(), ['status' => 'success'])
+            array_merge($users->toArray(), ['status' => 'success'])
         );
     }
     public function viewUsersRoleClient()
     {
-        $users = User::where('user_type', 3);
-        $result = $users->paginate(20);
-        return response()->json(
-            array_merge($result->toArray(), ['status' => 'success'])
-        ); //client
+        $users = User::whereHas(
+            'roles', function($q){
+                $q->where('role_id', '3');
+            }
+        )->paginate(20);
+        return response()->json($users);
     }
 }
