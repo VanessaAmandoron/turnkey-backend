@@ -49,66 +49,27 @@ class SendContactDetailsController extends Controller
         );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $contacts = SendContactDetails::find($id);
+        $contacts->delete();
+        return response()->json(
+            array_merge($contacts->toArray(), ['status' => 'success'])
+        );   
     }
 
-    public function sendContact($id)
+    public function AgentTransactionHistory()
     {
+        $agent_id = Auth::user()->id;
+        $result = SendContactDetails::onlyTrashed()->where('agent_id', $agent_id);
+        $result =  $result->paginate(20);
 
-        Property::withTrashed()->find($id);
-        $property = Property::find($id);
-        return response()->json(['message' => "Property Successfully Restored.", 'data' => $property]);
+        return response()->json($result);
+    }
+    public function AdminTransactionHistory()
+    {
+        $result = SendContactDetails::onlyTrashed()->paginate(20);
+        
+        return response()->json($result);
     }
 }
