@@ -18,7 +18,6 @@ class CreateSendContactDetailsTable extends Migration
     {
         Schema::create('send_contact_details', function (Blueprint $table) {
             $table->increments('id');
-
             $table->bigInteger('client_id')->unsigned()->index();
             $table->foreign('client_id')->references('id')->on('users');
             $table->bigInteger('agent_id')->unsigned()->index();

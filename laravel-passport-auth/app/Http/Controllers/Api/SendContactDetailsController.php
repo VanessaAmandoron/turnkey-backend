@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Property;
 use App\Models\SendContactDetails;
 use Illuminate\Support\Facades\Auth;
@@ -69,7 +67,6 @@ class SendContactDetailsController extends Controller
     public function AdminTransactionHistory()
     {
         $result = SendContactDetails::onlyTrashed()->paginate(20);
-        
         return response()->json($result);
     }
 }
