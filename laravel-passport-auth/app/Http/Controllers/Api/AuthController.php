@@ -101,7 +101,9 @@ class AuthController extends Controller
                 }
 
                 $user->update($request->all());
-                return response()->json(['status => true', 'message' => "Profile Updated.", 'data' => $user]);
+                return response()->json(
+                    array_merge($user->toArray(), ['status' => 'success'])
+                );
             }
         } catch (\Exception $e) {
             return response()->json(['status => false', 'message' => $e->getMessage(), 'data' => []], 500);
