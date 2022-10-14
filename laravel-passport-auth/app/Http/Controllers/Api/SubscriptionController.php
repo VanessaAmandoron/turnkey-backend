@@ -76,7 +76,7 @@ class SubscriptionController extends Controller
 
     public function AdminSubscriptionList()
     {
-        $result = Subscription::withTrashed()->paginate(20);
+        $result = SubscriptionInfo::withTrashed()->paginate(20);
         return response()->json($result);
     }
 }
