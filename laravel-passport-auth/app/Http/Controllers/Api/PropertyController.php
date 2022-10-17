@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePropertyRequest;
 use App\Models\Property;
 use App\Models\User;
+use App\Models\SendContactDetails;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -163,6 +164,17 @@ class PropertyController extends Controller
         return response()->json(['message' => "Property Successfully Restored.", 'data' => $property]);
     }
     //end Property restore
+    public function AgentDashboard(Request $request)
+    {
+        $user = $request->user();
+        $id  = $user->id;
+        $data ['properties']= Property::where('user_id', $id)->count();
+        $data ['clients']= SendContactDetails::where('agent_id', $id)->count();
+        $data ['finished_clients']= SendContactDetails::where('agent_id', $id)->onlyTrashed()->count();
+        $result = $data;
+        return response()->json( $result);
+
+    }
     public function AgentHasProperty(Request $request)
     {
         $user = $request->user();
