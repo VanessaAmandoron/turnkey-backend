@@ -35,7 +35,7 @@ class PropertyController extends Controller
             ->orWhere('price','LIKE',"%{$request -> input ('search')}%")
             ->orWhere('area','LIKE',"%{$request -> input ('search')}%");
         })->paginate(20);
-        //end search for admin
+        //end search for client
 
         return response()->json(
             array_merge($property->toArray(), ['status' => 'success'])
@@ -167,7 +167,7 @@ class PropertyController extends Controller
     {
         $user = $request->user();
         $id  = $user->id;
-        $property = Property::where('user_id', $id)->when($request->filled('search'),function($q)
+        $property = Property::where('user_id', $id)->withTrashed()->when($request->filled('search'),function($q)
         //search for agent
         use ($request){
             $q
