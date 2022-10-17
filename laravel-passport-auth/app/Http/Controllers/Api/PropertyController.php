@@ -133,21 +133,7 @@ class PropertyController extends Controller
             "data" => $property
         ]);
     }
-    public function PropertyListForAdmin(Request $request)
-    {
-        $property = Property::withTrashed()->when($request->filled('search'),function($q)
-        //search for 
-        use ($request){
-            $q
-            ->where('title','LIKE',"%{$request -> input ('search')}%")
-            ->orWhere('address_1','LIKE',"%{$request -> input ('search')}%")
-            ->orWhere('address_2','LIKE',"%{$request -> input ('search')}%")
-            ->orWhere('price','LIKE',"%{$request -> input ('search')}%")
-            ->orWhere('area','LIKE',"%{$request -> input ('search')}%");
-        })->orderBy('id');
-        $result = $property->paginate(20);
-        return response()->json($result);
-    }
+
     public function delete($id)
     {
         $property = Property::find($id);
@@ -175,11 +161,10 @@ class PropertyController extends Controller
         return response()->json( $result);
 
     }
-    public function AgentHasProperty(Request $request)
+    public function AgentProperty(Request $request)
     {
-        $user = $request->user();
-        $id  = $user->id;
-        $property = Property::where('user_id', $id)->withTrashed()->when($request->filled('search'),function($q)
+        $user = Auth::user()->id;
+        $property = Property::where('user_id', $user)->withTrashed()->when($request->filled('search'),function($q)
         //search for agent
         use ($request){
             $q
@@ -194,6 +179,20 @@ class PropertyController extends Controller
             array_merge($property->toArray(), ['status' => 'success'])
         ); 
     }
-
+    public function PropertyListForAdmin(Request $request)
+    {
+        $property = Property::withTrashed()->when($request->filled('search'),function($q)
+        //search for 
+        use ($request){
+            $q
+            ->where('title','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('address_1','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('address_2','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('price','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('area','LIKE',"%{$request -> input ('search')}%");
+        })->orderBy('id');
+        $result = $property->paginate(20);
+        return response()->json($result);
+    }
 
 }

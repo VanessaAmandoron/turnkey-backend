@@ -46,7 +46,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     
     Route::get('users-role/agent', [AuthController::class, 'viewUsersRoleAgent']);
     Route::get('users-role/client', [AuthController::class, 'viewUsersRoleClient']);
-    Route::get('property-list', [PropertyController::class, 'AgentHasProperty']);
+    Route::get('property-list', [PropertyController::class, 'AgentProperty']);
     Route::get('property/{id}', [PropertyController::class, 'show']);
     Route::get('agent/contacts/history', [SendContactDetailsController::class, 'AgentTransactionHistory']);//for agentTransactionHistory
     Route::get('admin/contacts/history', [SendContactDetailsController::class, 'AdminTransactionHistory']);//for adminTransactionHistory
