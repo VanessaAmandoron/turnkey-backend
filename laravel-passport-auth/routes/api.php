@@ -58,7 +58,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::put('agent/subscription/edit/{id}', [SubscriptionController::class, 'EditAgentSubcription']);//agent edit subcription
     Route::delete('agent/subscription/delete', [SubscriptionController::class, 'CancelSubscription']);//agent cancel subcription
     
-    Route::get('property', [PropertyController::class, 'index']);
+    Route::get('property', [PropertyController::class, 'index']);//for client property list
     Route::post('property-create', [PropertyController::class, 'store']);
     Route::put('property-edit', [PropertyController::class, 'update']);
     Route::delete('property-delete', [PropertyController::class, 'destroy']);//agent, admin

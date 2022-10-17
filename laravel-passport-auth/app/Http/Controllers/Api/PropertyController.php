@@ -26,7 +26,7 @@ class PropertyController extends Controller
     {
         
         $property = Property::when($request->filled('search'),function($q)
-        //search for admin
+        //search for client
         use ($request){
             $q
             ->where('title','LIKE',"%{$request -> input ('search')}%")
@@ -132,9 +132,18 @@ class PropertyController extends Controller
             "data" => $property
         ]);
     }
-    public function PropertyListForAdmin()
+    public function PropertyListForAdmin(Request $request)
     {
-        $property = Property::withTrashed()->orderBy('id');
+        $property = Property::withTrashed()->when($request->filled('search'),function($q)
+        //search for 
+        use ($request){
+            $q
+            ->where('title','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('address_1','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('address_2','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('price','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('area','LIKE',"%{$request -> input ('search')}%");
+        })->orderBy('id');
         $result = $property->paginate(20);
         return response()->json($result);
     }
@@ -158,7 +167,16 @@ class PropertyController extends Controller
     {
         $user = $request->user();
         $id  = $user->id;
-        $property = Property::where('user_id', $id)->paginate(20);
+        $property = Property::where('user_id', $id)->when($request->filled('search'),function($q)
+        //search for agent
+        use ($request){
+            $q
+            ->where('title','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('address_1','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('address_2','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('price','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('area','LIKE',"%{$request -> input ('search')}%");
+        })->paginate(20);
 
         return response()->json(
             array_merge($property->toArray(), ['status' => 'success'])
