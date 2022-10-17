@@ -24,6 +24,8 @@ use App\Http\Controllers\Api\SubscriptionController;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
+Route::get('property', [PropertyController::class, 'index']);//for client and user property list
+
 Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword']);
 Route::post('reset-password', [NewPasswordController::class, 'reset']);
 
@@ -58,7 +60,6 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::put('agent/subscription/edit/{id}', [SubscriptionController::class, 'EditAgentSubcription']);//agent edit subcription
     Route::delete('agent/subscription/delete', [SubscriptionController::class, 'CancelSubscription']);//agent cancel subcription
     
-    Route::get('property', [PropertyController::class, 'index']);//for client property list
     Route::post('property-create', [PropertyController::class, 'store']);
     Route::put('property-edit', [PropertyController::class, 'update']);
     Route::delete('property-delete', [PropertyController::class, 'destroy']);//agent, admin
@@ -68,6 +69,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 
 //Agent Route
 // Route::group(['middleware' => ['auth:api', 'role:agent']], function(){ //'role:agent|admin'
-//trial
-// });
-Route::post('image', [ImageController::class, 'imageStore']);
+    //trial
+    // });
+    Route::post('image', [ImageController::class, 'imageStore']);
+    
