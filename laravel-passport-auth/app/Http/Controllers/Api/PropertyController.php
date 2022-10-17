@@ -168,7 +168,7 @@ class PropertyController extends Controller
     {
         $user = $request->user();
         $id  = $user->id;
-        $data ['properties']= Property::where('user_id', $id)->count();
+        $data ['properties']= Property::where('user_id', $id)->withTrashed()->count();
         $data ['clients']= SendContactDetails::where('agent_id', $id)->count();
         $data ['finished_clients']= SendContactDetails::where('agent_id', $id)->onlyTrashed()->count();
         $result = $data;
