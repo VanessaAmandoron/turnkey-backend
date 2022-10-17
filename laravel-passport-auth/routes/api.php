@@ -24,6 +24,8 @@ use App\Http\Controllers\Api\SubscriptionController;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
+Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword']);
+Route::post('reset-password', [NewPasswordController::class, 'reset']);
 
 Route::group(['middleware' => 'auth:api'], function(){
     Route::get('profile', [AuthController::class, 'UserDetails']);
@@ -69,6 +71,3 @@ Route::group(['middleware' => 'auth:api'], function(){
 //trial
 // });
 Route::post('image', [ImageController::class, 'imageStore']);
-
-Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword']);
-Route::post('reset-password', [NewPasswordController::class, 'reset']);

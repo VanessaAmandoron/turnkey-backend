@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Models\SendContactDetails;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SendContactDetailsController extends Controller
@@ -14,10 +15,20 @@ class SendContactDetailsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()//For agent
+    public function index(Request $request)//For agent
     {
         $agent_id = Auth::user()->id;
-        $result = SendContactDetails::where('agent_id', $agent_id);
+        $result = SendContactDetails::where('agent_id', $agent_id)->when($request->filled('search'),function($q)
+
+        use ($request){
+            $q
+            ->where('first_name','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('property_title','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('last_name','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('email','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('phone_number','LIKE',"%{$request -> input ('search')}%");
+        });
+        
         $result =  $result->paginate(20);
         return response()->json(
             array_merge($result->toArray(), ['status' => 'success'])
@@ -64,9 +75,21 @@ class SendContactDetailsController extends Controller
 
         return response()->json($result);
     }
-    public function AdminTransactionHistory()
+    public function AdminTransactionHistory(Request $request)
     {
-        $result = SendContactDetails::onlyTrashed()->paginate(20);
-        return response()->json($result);
+        $result = SendContactDetails::onlyTrashed()->when($request->filled('search'),function($q)
+
+        use ($request){
+            $q
+            ->where('first_name','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('property_title','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('last_name','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('email','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('phone_number','LIKE',"%{$request -> input ('search')}%");
+        });
+        $result =  $result->paginate(20);
+        return response()->json(
+            array_merge($result->toArray(), ['status' => 'success'])//bug
+        );
     }
 }

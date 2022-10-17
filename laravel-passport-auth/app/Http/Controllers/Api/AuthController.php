@@ -60,10 +60,20 @@ class AuthController extends Controller
         $user = Auth::user();
         return response()->json(['success' => $user], $this->successStatus);
     }
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(5);
-        return response()->json($users);
+        $users = User::when($request->filled('search'),function($q)
+        use ($request){
+            $q
+            ->where('first_name','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('last_name','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('email','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('phone_number','LIKE',"%{$request -> input ('search')}%");
+        })->paginate(20);
+
+        return response()->json(
+            array_merge($users->toArray(), ['status' => 'success'])
+        );
     }
     public function VerifyEmail()
     {
