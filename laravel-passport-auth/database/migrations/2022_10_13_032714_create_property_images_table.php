@@ -17,7 +17,7 @@ class CreatePropertyImagesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('property_id');
             $table->foreign('property_id')->references('id')->on('properties');
-            $table->binary('image');
+            $table->binary('property_imgs');
             $table->timestamps();
             $table->softDeletes();
         });

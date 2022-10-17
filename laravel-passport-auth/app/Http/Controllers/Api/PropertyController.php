@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Models\PropertyImage;
 
 // use Illuminate\Support\Facades\Validator;
 
@@ -45,11 +46,16 @@ class PropertyController extends Controller
 
     public function store(StorePropertyRequest $request)
     {
+        $images = new PropertyImage();
+
         $user = $request->user();
 
         $input = $request->validated();
         $input["user_id"] = $user->id;
-
+        
+        $images->property_id = Property::find()->id;
+        $images->property_imgs = $input["property_imgs"];
+        $images->save();
 
         $property = Property::make($input);
         $user->properties()->save($property);

@@ -35,7 +35,7 @@ class StorePropertyRequest extends FormRequest
                 "address_2" => "required",
                 "city" => "required",
                 "zip_code" => "required|integer",
-                "img" => "nullable",
+                // "img" => "nullable",
                 "availability" => "required",
         ];
     }

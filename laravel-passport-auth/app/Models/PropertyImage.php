@@ -9,6 +9,10 @@ class PropertyImage extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'property_imgs'
+    ];
+
     public function property(){
         return $this->belongsTo(Property::class);
     }
