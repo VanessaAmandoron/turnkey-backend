@@ -23,7 +23,7 @@ class PropertyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function clientViewProperty(Request $request)
     {
         
         $property = Property::when($request->filled('search'),function($q)
@@ -44,7 +44,7 @@ class PropertyController extends Controller
 
     }
 
-    public function store(StorePropertyRequest $request)
+    public function createProperty(StorePropertyRequest $request)
     {
         $user = $request->user();
 
@@ -78,7 +78,7 @@ class PropertyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showProperty($id)
     {
         $property = Property::find($id);
         if (is_null($property)) {
@@ -124,7 +124,7 @@ class PropertyController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Property $property)
+    public function destroyProperty(Property $property)
     {
         $property->delete();
         return response()->json([

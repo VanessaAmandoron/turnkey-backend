@@ -24,7 +24,7 @@ use App\Http\Controllers\Api\SubscriptionController;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
-Route::get('property', [PropertyController::class, 'index']);//for client and user property list
+Route::get('property', [PropertyController::class, 'clientViewProperty']);//for client and user property list
 
 Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword']);
 Route::post('reset-password', [NewPasswordController::class, 'reset']);
@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('users-role/agent', [AuthController::class, 'viewUsersRoleAgent']);
     Route::get('users-role/client', [AuthController::class, 'viewUsersRoleClient']);
     Route::get('property-list', [PropertyController::class, 'AgentProperty']);
-    Route::get('property/{id}', [PropertyController::class, 'show']);
+    Route::get('property/{id}', [PropertyController::class, 'showProperty']);
     Route::get('agent/contacts/history', [SendContactDetailsController::class, 'AgentTransactionHistory']);//for agentTransactionHistory
     Route::get('admin/contacts/history', [SendContactDetailsController::class, 'AdminTransactionHistory']);//for adminTransactionHistory
     Route::get('agent/contacts', [SendContactDetailsController::class, 'index']);//conatact list
@@ -63,9 +63,10 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::delete('agent/subscription/delete', [SubscriptionController::class, 'CancelSubscription']);//agent cancel subcription
     Route::get('agent/dashboard', [PropertyController::class, 'AgentDashboard']);//agent dashboard    
     
-    Route::post('property-create', [PropertyController::class, 'store']);
-    Route::put('property-edit/{id}', [PropertyController::class, 'update']);
-    Route::delete('property-delete', [PropertyController::class, 'destroy']);//agent, admin
+    Route::post('property-create', [PropertyController::class, 'createProperty']);
+    Route::apiResource('properties', PropertyController::class);  
+    // Route::put('property-edit/{id}', [PropertyController::class, 'update']);
+    Route::delete('property-delete', [PropertyController::class, 'destroyProperty']);//agent, admin
     
 });
 
