@@ -79,7 +79,7 @@ class SubscriptionController extends Controller
         $result = SubscriptionInfo::withTrashed()->paginate(20);
         return response()->json($result);
     }    
-    public function ClientSubscriptionList()
+    public function SubscriptionList()
     {
         $result = SubscriptionInfo::paginate(20);
         return response()->json($result);

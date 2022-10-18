@@ -29,6 +29,8 @@ Route::get('property', [PropertyController::class, 'index']);//for client and us
 Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword']);
 Route::post('reset-password', [NewPasswordController::class, 'reset']);
 
+Route::get('subscription-list', [SubscriptionController::class, 'SubscriptionList']);//admin subcription list of agents
+
 Route::group(['middleware' => 'auth:api'], function(){
     Route::get('profile', [AuthController::class, 'UserDetails']);
     Route::put('profile/edit', [AuthController::class, 'EditProfile']);
@@ -59,9 +61,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('agent/subscription-info', [SubscriptionController::class, 'index']);//agent subcription information
     Route::put('agent/subscription/edit/{id}', [SubscriptionController::class, 'EditAgentSubcription']);//agent edit subcription
     Route::delete('agent/subscription/delete', [SubscriptionController::class, 'CancelSubscription']);//agent cancel subcription
-    Route::get('agent/dashboard', [PropertyController::class, 'AgentDashboard']);//agent dashboard
-    Route::get('client/subscription-list', [SubscriptionController::class, 'ClientSubscriptionList']);//admin subcription list of agents
-    
+    Route::get('agent/dashboard', [PropertyController::class, 'AgentDashboard']);//agent dashboard    
     
     Route::post('property-create', [PropertyController::class, 'store']);
     Route::put('property-edit/{id}', [PropertyController::class, 'update']);
