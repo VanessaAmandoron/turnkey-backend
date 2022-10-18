@@ -17,15 +17,8 @@ use Illuminate\Support\Facades\Auth;
 
 class PropertyController extends Controller
 {
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function clientViewProperty(Request $request)
     {
-        
         $property = Property::when($request->filled('search'),function($q)
         //search for client
         use ($request){
@@ -37,11 +30,9 @@ class PropertyController extends Controller
             ->orWhere('area','LIKE',"%{$request -> input ('search')}%");
         })->paginate(20);
         //end search for client
-
         return response()->json(
             array_merge($property->toArray(), ['status' => 'success'])
         );
-
     }
 
     public function createProperty(StorePropertyRequest $request)
@@ -62,22 +53,7 @@ class PropertyController extends Controller
             "data" => $property
         ]);
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function showProperty($id)
     {
         $property = Property::find($id);
@@ -91,39 +67,15 @@ class PropertyController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Property $property)
     {
-
-
         $property->update($request->all());
-
         return [
             "data" => $property,
             "msg" => "Property updated successfully"
         ];
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
     public function destroyProperty(Property $property)
     {
         $property->delete();
@@ -159,12 +111,12 @@ class PropertyController extends Controller
         $data ['finished_clients']= SendContactDetails::where('agent_id', $id)->onlyTrashed()->count();
         $result = $data;
         return response()->json( $result);
-
     }
     public function AgentProperty(Request $request)
     {
         $user = Auth::user()->id;
-        $property = Property::where('user_id', $user)->withTrashed()->when($request->filled('search'),function($q)
+        $property = Property::where('user_id', $user)->withTrashed()
+        ->when($request->filled('search'),function($q)
         //search for agent
         use ($request){
             $q
@@ -179,6 +131,7 @@ class PropertyController extends Controller
             array_merge($property->toArray(), ['status' => 'success'])
         ); 
     }
+    
     public function PropertyListForAdmin(Request $request)
     {
         $property = Property::withTrashed()->when($request->filled('search'),function($q)
