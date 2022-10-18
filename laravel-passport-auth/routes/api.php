@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('agent/dashboard', [PropertyController::class, 'AgentDashboard']);//agent dashboard    
     
     Route::post('property-create', [PropertyController::class, 'createProperty']);
-    Route::apiResource('properties', PropertyController::class);  
+    Route::apiResource('properties', PropertyController::class); //edit properties ni
     // Route::put('property-edit/{id}', [PropertyController::class, 'update']);
     Route::delete('property-delete', [PropertyController::class, 'destroyProperty']);//agent, admin
     
