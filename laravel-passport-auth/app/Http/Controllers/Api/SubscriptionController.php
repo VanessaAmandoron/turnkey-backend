@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Subscription;
 use App\Models\SubscriptionInfo;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,9 +19,10 @@ class SubscriptionController extends Controller
         $result = Subscription::where('agent_id',$agent_id)->get();
         return response()->json( $result);
     }
-    public function AgentSubcription($id)
+    public function AgentSubcription($user_id, $id)
     {  
         $data = new Subscription(); 
+        $_id = User::find($user_id)->id;
         $data->agent_id = Auth::user()->id; //agent_id
         $data->first_name = Auth::user()->first_name;//agent_name
         $data->last_name = Auth::user()->last_name;//agent_name
@@ -33,7 +35,8 @@ class SubscriptionController extends Controller
         $data->expire_date = Carbon::today()->addMonth()->toDateTimeString();
         $data->save();
         return response()->json(
-            array_merge($data->toArray(), ['status' => 'success'])
+            array_merge($data->toArray(), [$_id,
+            'status' => 'success'])
         );
     }
     public function CancelSubscription()
