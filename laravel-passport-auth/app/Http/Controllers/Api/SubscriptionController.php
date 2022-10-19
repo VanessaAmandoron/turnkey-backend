@@ -21,24 +21,11 @@ class SubscriptionController extends Controller
     public function AgentSubcription($id)
     {  
         $data = new Subscription(); 
-        
-        $agent_id = Auth::user()->id; //agent_id
-        $bool = Subscription::where('agent_id',$agent_id);
-        $date_now = Carbon::now();
-        $date_expire = Carbon::today()->addMonth();
-        if($bool == true || $date_now >= $date_expire){
-            return response()->json([
-                "success" => false,
-                "message" => 
-                "You still have ongoing subscription!",
-                "expire date: " => $date_expire->toDateTimeString()
-            ]);
-        } else{
         $data->agent_id = Auth::user()->id; //agent_id
         $data->first_name = Auth::user()->first_name;//agent_name
         $data->last_name = Auth::user()->last_name;//agent_name
         $data->hash = '';//si ben ani
-        $data->subscription_id = SubscriptionInfo::find($id)->id;//sub id
+        $data->subscription_id = SubscriptionInfo::find($id)->id;
         $data->subscription_type =  SubscriptionInfo::find($id)->title;//subscription_type
         // // $sub_type = $id == 0 ? 'Free' : $id == 1 ? 'Starter' : ' Premium';
         // // $data->subscription_type = $sub_type;
@@ -48,7 +35,6 @@ class SubscriptionController extends Controller
         return response()->json(
             array_merge($data->toArray(), ['status' => 'success'])
         );
-        }
     }
     public function CancelSubscription()
     {
