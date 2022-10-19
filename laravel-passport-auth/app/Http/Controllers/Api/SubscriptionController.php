@@ -15,11 +15,8 @@ class SubscriptionController extends Controller
     public function index()//For agent subscription info 
     {
         $agent_id = Auth::user()->id;
-        $result = Subscription::find($agent_id);
-        // $result =  $result->paginate(20);
-        return response()->json(
-            array_merge($result->toArray(), ['status' => 'success'])
-        );
+        $result = Subscription::where('agent_id',$agent_id)->get();
+        return response()->json( $result);
     }
     public function AgentSubcription($id)
     {  
