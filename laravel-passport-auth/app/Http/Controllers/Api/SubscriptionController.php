@@ -22,7 +22,8 @@ class SubscriptionController extends Controller
     public function AgentSubcription($user_id, $id)
     {  
         $data = new Subscription(); 
-        $_id = User::find($user_id)->id;
+        // $_id = User::find($user_id)->id;
+        $user_id = User::latest()->first()->id;
         $data->agent_id = Auth::user()->id; //agent_id
         $data->first_name = Auth::user()->first_name;//agent_name
         $data->last_name = Auth::user()->last_name;//agent_name
@@ -35,7 +36,7 @@ class SubscriptionController extends Controller
         $data->expire_date = Carbon::today()->addMonth()->toDateTimeString();
         $data->save();
         return response()->json(
-            array_merge($data->toArray(), [$_id,
+            array_merge($data->toArray(), ['user_id' => $user_id,
             'status' => 'success'])
         );
     }
