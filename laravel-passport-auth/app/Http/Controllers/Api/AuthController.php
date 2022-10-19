@@ -38,7 +38,11 @@ class AuthController extends Controller
                 "link" => env("APP_WEB_URL") . "/verify?token=" . $users->createToken('laravel-passport-auth')->accessToken
             ])
         );
-        return response()->json(['message' => "Email Verification Sent."], $this->successStatus);
+        
+        return response()->json([
+            'user_id'=>$users->id,
+            'message' => "Email Verification Sent."
+        ], $this->successStatus);
     }
 
     public function login()
