@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePropertyRequest;
+use App\Models\ImageProperty;
 use App\Models\Property;
 use App\Models\User;
 use App\Models\SendContactDetails;
@@ -37,15 +38,40 @@ class PropertyController extends Controller
 
     public function createProperty(StorePropertyRequest $request)
     {
-        $user = $request->user();
 
+        $user = $request->user();
+        
         $input = $request->validated();
         $input["user_id"] = $user->id;
-
-
+        
+        
         $property = Property::make($input);
         $user->properties()->save($property);
         $property->refresh();
+        
+
+        //MULTIPLE IMAGE
+        // if($request->hasFile("photo")){
+        //     $files=$request->file("photo");
+        //     foreach($files as $file){
+        //         $imageName=time().'-'.$file->getCLientOriginalName();
+        //         $request['property_id']=$property->id;
+        //         $request['name']=$imageName;
+        //         $file->move(\public_path("/images"),$imageName);
+        //         ImageProperty::create($request->all());
+        //     }
+        // }
+
+        if($request->hasFile("photo")){
+            $files=$request->file("photo");
+            foreach($files as $file){
+                $imageName=time().'-'.$file->getFilename();
+                $imageName=str_replace('','-',$imageName);
+                $file->move('images', $imageName);
+                $property->image()->create(['name' => $imageName]);
+            } 
+        }
+
 
         return response()->json([
             "success" => true,
@@ -53,7 +79,6 @@ class PropertyController extends Controller
             "data" => $property
         ]);
     }
-
     public function showProperty($id)
     {
         $property = Property::find($id);
