@@ -23,7 +23,7 @@ class SubscriptionController extends Controller
     {  
         $data = new Subscription(); 
         // $_id = User::find($user_id)->id;
-        $user_id = Auth::user()->id; //agent_id
+        $user_id = User::find($user_id)->id; //agent_id
         $data->agent_id = Auth::user()->id; //agent_id
         $data->first_name = Auth::user()->first_name;//agent_name
         $data->last_name = Auth::user()->last_name;//agent_name
