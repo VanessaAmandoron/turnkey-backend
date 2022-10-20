@@ -18,14 +18,14 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|min:8',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'user_type' => 'required',
+            'email' => 'required|email|unique:users',
+            // 'password' => 'required|min:8',
+            // 'first_name' => 'required',
+            // 'last_name' => 'required',
+            // 'user_type' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
+            return response()->json( $validator->errors(), 401);
         }
         $input = $request->except('user_role');
         $input['password'] = bcrypt($input['password']);
