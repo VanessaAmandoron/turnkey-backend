@@ -58,18 +58,18 @@ class AuthController extends Controller
             $success['user_id'] = $users->id;
             $success['user_name'] = $users->first_name;
             $success['user_role'] = $users->getRoleNames();
-            $boolean_roles = $users->hasRole('agent');
-            $boolean_agentID = (Subscription::find(Auth::user()->id)->agent_id == $users->id);
-            $success['agent_id check'] =  $boolean_agentID;
+            // $boolean_roles = $users->hasRole('agent');
+            // $boolean_agentID = (Subscription::find(Auth::user()->id)->agent_id == $users->id);
+            // $success['agent_id check'] =  $boolean_agentID;
             // $success['bool'] =  $users->getRoleNames() != [("client")];
             //(Subscription::find(Auth::user()->id)->agent_id == $users->id)
             //$boolean = false;'user_role' == "agent" &&
             //$find = Subscription::find(Auth::user()->id)->agent_id;
-            if($boolean_roles == true && $boolean_agentID == false){
-                $success['subscribe'] = false;
-            }else if($boolean_roles == true && $boolean_agentID == true){
-                $success['subscribe'] = true;
-            }
+            // if($boolean_roles == true && $boolean_agentID == false){
+            //     $success['subscribe'] = false;
+            // }else if($boolean_roles == true && $boolean_agentID == true){
+            //     $success['subscribe'] = true;
+            // }
             return response()->json(["data" => $success], $this->successStatus);
         // }
 
