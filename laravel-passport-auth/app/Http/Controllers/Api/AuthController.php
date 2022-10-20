@@ -50,14 +50,13 @@ class AuthController extends Controller
     {
         if (Auth::attempt(['email' => request('email'), 'password' => request('password'),])) {
             $users = Auth::user();
-            $email_verified = $users->hasVerifiedEmail();
-            if($email_verified == false){
-                return response()->json(['Error' => 'Email not verified'], 403);
-            }else{
+            // $email_verified = $users->hasVerifiedEmail();
+            // if($email_verified == false){
+            //     return response()->json(['Error' => 'Email not verified'], 403);
+            // }else{
             $success['Token'] =  $users->createToken('laravel-passport-auth')->accessToken;
             $success['user_id'] = $users->id;
             $success['user_name'] = $users->first_name;
-            $success['user_role'] = $users->getRoleNames();
             $boolean_roles = $users->hasRole('agent');
             $boolean_agentID = Auth::user()->id;//agent_id
             $new = Subscription::where(['agent_id' => $boolean_agentID])->exists();//check if existing
@@ -66,8 +65,9 @@ class AuthController extends Controller
             }else if($boolean_roles == true && $new == true){
                 $success['subscribe'] = true;
             }
+            $success['user_role'] = $users->getRoleNames();
             return response()->json(["data" => $success], $this->successStatus);
-        }
+        // }
 
         } else {
             return response()->json(['ERROR' => 'Unauthorised'], 401);
