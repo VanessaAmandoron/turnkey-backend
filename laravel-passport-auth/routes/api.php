@@ -31,7 +31,7 @@ Route::post('reset-password', [NewPasswordController::class, 'reset']);
 
 Route::get('subscription-list', [SubscriptionController::class, 'SubscriptionList']);//admin subcription list of agents
 
-Route::group(['middleware' => 'auth:api'], function(){
+Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::get('profile', [AuthController::class, 'UserDetails']);
     Route::put('profile/edit', [AuthController::class, 'EditProfile']);
     Route::get('users', [AuthController::class, 'index']);
@@ -55,7 +55,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('agent/contacts', [SendContactDetailsController::class, 'index']);//conatact list
     Route::get('property/contact/{id}', [SendContactDetailsController::class, 'create']);//send details to table
     Route::delete('agent/contacts/delete/{id}', [SendContactDetailsController::class, 'destroy']);//new
-    Route::post('agent/subscription/{id}', [SubscriptionController::class, 'AgentSubcription']);//agent subcription
+    Route::post('agent/subscription/{user_id}/{id}', [SubscriptionController::class, 'AgentSubcription']);//agent subcription
     Route::post('admin/create-subscription', [SubscriptionController::class, 'AdminCreateSubcription']);//agent subcription
     Route::get('admin/subscription-list', [SubscriptionController::class, 'AdminSubscriptionList']);//admin subcription list of agents
     Route::get('agent/subscription-info', [SubscriptionController::class, 'index']);//agent subcription information

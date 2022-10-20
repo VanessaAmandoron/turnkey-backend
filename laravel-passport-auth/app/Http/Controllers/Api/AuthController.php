@@ -50,30 +50,28 @@ class AuthController extends Controller
     {
         if (Auth::attempt(['email' => request('email'), 'password' => request('password'),])) {
             $users = Auth::user();
-            $email_verified = $users->hasVerifiedEmail();
-            if($email_verified == false){
-                return response()->json(['Error' => 'Email not verified'], 403);
-            }else{
+            // $email_verified = $users->hasVerifiedEmail();
+            // if($email_verified == false){
+            //     return response()->json(['Error' => 'Email not verified'], 403);
+            // }else{
             $success['Token'] =  $users->createToken('laravel-passport-auth')->accessToken;
             $success['user_id'] = $users->id;
             $success['user_name'] = $users->first_name;
             $success['user_role'] = $users->getRoleNames();
             $boolean_roles = $users->hasRole('agent');
             $boolean_agentID = (Subscription::find(Auth::user()->id)->agent_id == $users->id);
-            // $success['agent_id check'] =  $boolean_agentID;
+            $success['agent_id check'] =  $boolean_agentID;
             // $success['bool'] =  $users->getRoleNames() != [("client")];
             //(Subscription::find(Auth::user()->id)->agent_id == $users->id)
+            //$boolean = false;'user_role' == "agent" &&
+            //$find = Subscription::find(Auth::user()->id)->agent_id;
             if($boolean_roles == true && $boolean_agentID == false){
-                //$boolean = false;'user_role' == "agent" &&
-                //$find = Subscription::find(Auth::user()->id)->agent_id;
                 $success['subscribe'] = false;
             }else if($boolean_roles == true && $boolean_agentID == true){
-                //$boolean = false;'user_role' == "agent" &&
-                //$find = Subscription::find(Auth::user()->id)->agent_id;
                 $success['subscribe'] = true;
             }
             return response()->json(["data" => $success], $this->successStatus);
-        }
+        // }
 
         } else {
             return response()->json(['ERROR' => 'Unauthorised'], 401);
