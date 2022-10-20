@@ -31,7 +31,7 @@ Route::post('reset-password', [NewPasswordController::class, 'reset']);
 
 Route::get('subscription-list', [SubscriptionController::class, 'SubscriptionList']);//admin subcription list of agents
 
-Route::group(['middleware' => 'auth:api'], function(){
+Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::get('profile', [AuthController::class, 'UserDetails']);
     Route::put('profile/edit', [AuthController::class, 'EditProfile']);
     Route::get('users', [AuthController::class, 'index']);
