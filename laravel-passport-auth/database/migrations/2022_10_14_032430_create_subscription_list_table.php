@@ -23,7 +23,7 @@ class CreateSubscriptionListTable extends Migration
             // $table->foreign('subscription_type')->references('subscription_type')->on('subscription_infos');
             $table->string('first_name')->references('first_name')->on('users');
             $table->string('last_name')->references('last_name')->on('users');
-            $table->string('hash');
+            $table->string('hash')->nullable();
             $table->string('start_date');
             $table->string('expire_date');
             $table->timestamps();
