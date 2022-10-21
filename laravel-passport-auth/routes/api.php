@@ -70,7 +70,7 @@ Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::post('property-create', [PropertyController::class, 'createProperty']);
     Route::apiResource('properties', PropertyController::class); //edit properties ni
     // Route::put('property-edit/{id}', [PropertyController::class, 'update']);
-    Route::delete('property-delete', [PropertyController::class, 'destroyProperty']);//agent, admin
+    // Route::delete('property-delete', [PropertyController::class, 'destroyProperty']);//agent, admin
     
 });
     

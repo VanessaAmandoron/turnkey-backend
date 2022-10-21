@@ -76,17 +76,17 @@ class PropertyController extends Controller
         ];
     }
 
-    public function destroyProperty(Property $property)
-    {
-        $property->delete();
-        return response()->json([
-            "success" => true,
-            "message" => "Property deleted successfully.",
-            "data" => $property
-        ]);
-    }
+    // public function destroyProperty(Property $property)
+    // {
+    //     $property->delete();
+    //     return response()->json([
+    //         "success" => true,
+    //         "message" => "Property deleted successfully.",
+    //         "data" => $property
+    //     ]);
+    // }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $property = Property::find($id);
         $property->delete();
