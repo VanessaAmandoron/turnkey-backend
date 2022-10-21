@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         }
     );
 
-    User::factory()->count(10)->hasProperties(5)
+    User::factory()->count(10)//->hasProperties(5)
         ->create()
         ->each(function ($user){
             $user->assignRole('agent');
