@@ -31,12 +31,12 @@ Route::post('reset-password', [NewPasswordController::class, 'reset']);
 
 Route::get('subscription-list', [SubscriptionController::class, 'SubscriptionList']);//admin subcription list of agents
 Route::get('property/{id}', [PropertyController::class, 'showProperty']);
+Route::post('verify', [AuthController::class, 'VerifyEmail']);
 
 Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::get('profile', [AuthController::class, 'UserDetails']);
     Route::put('profile/edit', [AuthController::class, 'EditProfile']);
     Route::get('users', [AuthController::class, 'index']);
-    Route::post('verify', [AuthController::class, 'VerifyEmail']);
     Route::get('users/{id}', [AuthController::class, 'GetUser']);
 
     Route::get('property/restore/{id}', [PropertyController::class, 'restore']);//admin||agent
@@ -71,11 +71,4 @@ Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::delete('property-delete', [PropertyController::class, 'destroyProperty']);//agent, admin
     
 });
-
-
-//Agent Route
-// Route::group(['middleware' => ['auth:api', 'role:agent']], function(){ //'role:agent|admin'
-    //trial
-    // });
-    Route::post('image', [ImageController::class, 'imageStore']);
     
