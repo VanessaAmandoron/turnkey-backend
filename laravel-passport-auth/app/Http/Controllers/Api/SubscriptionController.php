@@ -70,7 +70,13 @@ class SubscriptionController extends Controller
             array_merge($data->toArray(), ['status' => 'success'])
         );
     }
-
+    public function agentSubsList()
+    {
+        $result = Subscription::withTrashed()->paginate(20);
+        return response()->json(
+            array_merge($result->toArray(), ['status' => 'success'])
+        );
+    }   
     public function AdminSubscriptionList()
     {
         $result = SubscriptionInfo::withTrashed()->paginate(20);

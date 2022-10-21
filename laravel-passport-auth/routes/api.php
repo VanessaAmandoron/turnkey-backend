@@ -30,6 +30,7 @@ Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword'])
 Route::post('reset-password', [NewPasswordController::class, 'reset']);
 
 Route::get('subscription-list', [SubscriptionController::class, 'SubscriptionList']);//admin subcription list of agents
+Route::get('property/{id}', [PropertyController::class, 'showProperty']);
 
 Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::get('profile', [AuthController::class, 'UserDetails']);
@@ -49,7 +50,6 @@ Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::get('users-role/agent', [AuthController::class, 'viewUsersRoleAgent']);
     Route::get('users-role/client', [AuthController::class, 'viewUsersRoleClient']);
     Route::get('property-list', [PropertyController::class, 'AgentProperty']);
-    Route::get('property/{id}', [PropertyController::class, 'showProperty']);
     Route::get('agent/contacts/history', [SendContactDetailsController::class, 'AgentTransactionHistory']);//for agentTransactionHistory
     Route::get('admin/contacts/history', [SendContactDetailsController::class, 'AdminTransactionHistory']);//for adminTransactionHistory
     Route::get('agent/contacts', [SendContactDetailsController::class, 'index']);//conatact list
@@ -57,11 +57,13 @@ Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::delete('agent/contacts/delete/{id}', [SendContactDetailsController::class, 'destroy']);//new
     Route::post('agent/subscription/{id}', [SubscriptionController::class, 'AgentSubcription']);//agent subcription
     Route::post('admin/create-subscription', [SubscriptionController::class, 'AdminCreateSubcription']);//agent subcription
-    Route::get('admin/subscription-list', [SubscriptionController::class, 'AdminSubscriptionList']);//admin subcription list of agents
+    Route::get('admin/subscription-list', [SubscriptionController::class, 'AdminSubscriptionList']);//admin subcription list
     Route::get('agent/subscription-info', [SubscriptionController::class, 'index']);//agent subcription information
     Route::put('agent/subscription/edit/{id}', [SubscriptionController::class, 'EditAgentSubcription']);//agent edit subcription
     Route::delete('agent/subscription/delete', [SubscriptionController::class, 'CancelSubscription']);//agent cancel subcription
     Route::get('agent/dashboard', [PropertyController::class, 'AgentDashboard']);//agent dashboard    
+    Route::get('admin/agent-list/', [SubscriptionController::class, 'agentSubsList']);//admin subcription list of agents who subs
+    
     
     Route::post('property-create', [PropertyController::class, 'createProperty']);
     Route::apiResource('properties', PropertyController::class); //edit properties ni
