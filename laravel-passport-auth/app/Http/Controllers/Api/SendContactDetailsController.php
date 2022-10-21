@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Models\SendContactDetails;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,6 +44,7 @@ class SendContactDetailsController extends Controller
     public function create($id)//for client
     {
         $data = new SendContactDetails();
+
         $data->client_id = Auth::user()->id; //client_id
         $data->agent_id = Property::find($id)->user_id; //agent_id
         $data->property_id = Property::find($id)->id; //property_id
@@ -51,8 +53,15 @@ class SendContactDetailsController extends Controller
         $data->last_name = Auth::user()->last_name;//client_name
         $data->email = Auth::user()->email;//client_email
         $data->phone_number = Auth::user()->phone_number;//client_phone_number
-
         $data->save();
+
+        $agent_iid = Property::find($id)->user_id;
+        $f_name = User::find($agent_iid)->first_name;
+        $l_name = User::find($agent_iid)->last_name;
+        $data ['agent_name'] = $f_name. ' ' . $l_name;
+        $data ['agent_email'] = User::find($agent_iid)->email;
+        $data ['agent_phone_number'] = User::find($agent_iid)->phone_number;
+
         return response()->json(
             array_merge($data->toArray(), ['status' => 'success'])
         );
