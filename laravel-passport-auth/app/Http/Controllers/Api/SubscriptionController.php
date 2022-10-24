@@ -51,7 +51,7 @@ class SubscriptionController extends Controller
     {  
         
         $agent_id = Auth::user()->id;
-        $data = Subscription::find($agent_id);
+        $data = Subscription::where('agent_id', $agent_id)->first();
         $data->subscription_id = SubscriptionInfo::find($id)->id;
         $data->subscription_type =  SubscriptionInfo::find($id)->title;//subscription_type
         $data ->update($request->all());
