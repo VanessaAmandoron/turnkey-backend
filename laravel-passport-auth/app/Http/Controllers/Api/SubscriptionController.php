@@ -82,9 +82,25 @@ class SubscriptionController extends Controller
         $result = SubscriptionInfo::withTrashed()->paginate(20);
         return response()->json($result);
     }    
+    public function AdminSubscriptionDelete($id)
+    {
+        $data = SubscriptionInfo::find($id);
+        $data->delete();
+        return response()->json(
+            array_merge($data->toArray(), ['status' => 'success'])
+        );  
+    }    
     public function SubscriptionList()
     {
         $result = SubscriptionInfo::paginate(20);
         return response()->json($result);
+    }
+
+    public function update(Request $request, SubscriptionInfo $subscriptionInfo)
+    {
+        $subscriptionInfo->update($request->all());
+        return response()->json(
+            array_merge($subscriptionInfo->toArray(), ['status' => 'success'])
+        );  
     }
 }
