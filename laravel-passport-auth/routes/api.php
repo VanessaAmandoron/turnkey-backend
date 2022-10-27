@@ -66,8 +66,9 @@ Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::get('admin/agent-list/', [SubscriptionController::class, 'agentSubsList']);//admin subcription list of agents who subs
     Route::get('admin/delete/subscription/{id}', [SubscriptionController::class, 'AdminSubscriptionDelete']);//admin delete subcription 
     Route::apiResource('subscriptions', SubscriptionController::class); //edit,delete subscription ni
+    Route::delete('admin/subscription/delete/{id}', [SubscriptionController::class, 'deletesubcription']);//admin delete subcription
 
-
+    // deletesubcription
     Route::get('agent/dashboard', [PropertyController::class, 'AgentDashboard']);//agent dashboard    
     
     
