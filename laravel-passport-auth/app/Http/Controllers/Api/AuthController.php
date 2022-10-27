@@ -169,22 +169,37 @@ class AuthController extends Controller
     }
     //end restore users
     //users role
-    public function viewUsersRoleAgent()
+    public function viewUsersRoleAgent(Request $request)
     {
         $users = User::withTrashed()->whereHas(
             'roles', function($q){
                 $q->where('role_id', '2');
             }
-        )->paginate(20);
+        )->when($request->filled('search'),function($q)
+        use ($request){
+            $q
+            ->where('first_name','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('last_name','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('email','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('phone_number','LIKE',"%{$request -> input ('search')}%");
+        })->paginate(20);
         return response()->json($users);
     }
-    public function viewUsersRoleClient()
+    
+    public function viewUsersRoleClient(Request $request)
     {
         $users = User::withTrashed()->whereHas(
             'roles', function($q){
                 $q->where('role_id', '3');
             }
-        )->paginate(20);
+        )->when($request->filled('search'),function($q)
+        use ($request){
+            $q
+            ->where('first_name','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('last_name','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('email','LIKE',"%{$request -> input ('search')}%")
+            ->orWhere('phone_number','LIKE',"%{$request -> input ('search')}%");
+        })->paginate(20);
         return response()->json($users);
     }
 }
