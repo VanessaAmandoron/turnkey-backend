@@ -96,8 +96,9 @@ class SubscriptionController extends Controller
         return response()->json($result);
     }
 
-    public function update(Request $request, SubscriptionInfo $subscriptionInfo)
+    public function update($id,Request $request)
     {
+        $subscriptionInfo= SubscriptionInfo::find($id);
         $subscriptionInfo->update($request->all());
         return response()->json(
             array_merge($subscriptionInfo->toArray(), ['status' => 'success'])

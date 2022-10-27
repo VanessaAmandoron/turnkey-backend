@@ -67,13 +67,13 @@ class PropertyController extends Controller
         ]);
     }
 
-    public function update(Request $request, Property $property)
+    public function update($id,Request $request)
     {
-        $property->update($request->all());
-        return [
-            "data" => $property,
-            "msg" => "Property updated successfully"
-        ];
+        $p= Property::find($id);
+        $p->update($request->all());
+        return response()->json(
+            array_merge($p->toArray(), ['status' => 'success'])
+        );  
     }
 
     // public function destroyProperty(Property $property)
