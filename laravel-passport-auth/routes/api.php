@@ -68,8 +68,9 @@ Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::apiResource('subscriptions', SubscriptionController::class); //edit,delete subscription ni
     Route::delete('admin/subscription/delete/{id}', [SubscriptionController::class, 'deletesubcription']);//admin delete subcription
 
-    // deletesubcription
+    // deletesubcription    AdminDashboard
     Route::get('agent/dashboard', [PropertyController::class, 'AgentDashboard']);//agent dashboard    
+    Route::get('admin/dashboard', [PropertyController::class, 'AdminDashboard']);//admin dashboard    
     
     
     Route::post('property-create', [PropertyController::class, 'createProperty']);
