@@ -112,6 +112,13 @@ class PropertyController extends Controller
         $result = $data;
         return response()->json( $result);
     }
+    public function AdminDashboard()
+    {
+        $data ['properties']= Property::get()->count();
+        $data ['users']= User::get()->count();
+        $result = $data;
+        return response()->json( $result);
+    }
     public function AgentProperty(Request $request)
     {
         $user = Auth::user()->id;
