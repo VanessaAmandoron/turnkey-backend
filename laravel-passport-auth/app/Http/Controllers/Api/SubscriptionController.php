@@ -79,7 +79,7 @@ class SubscriptionController extends Controller
     }   
     public function AdminSubscriptionList()
     {
-        $result = SubscriptionInfo::withTrashed()->paginate(20);
+        $result = SubscriptionInfo::paginate(20);
         return response()->json($result);
     }    
     public function AdminSubscriptionDelete($id)
