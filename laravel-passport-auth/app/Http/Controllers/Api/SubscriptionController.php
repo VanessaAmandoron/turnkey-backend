@@ -103,4 +103,12 @@ class SubscriptionController extends Controller
             array_merge($subscriptionInfo->toArray(), ['status' => 'success'])
         );  
     }
+    public function destroy($id)
+    {
+        $data = SubscriptionInfo::find($id);
+        $data->delete();
+        return response()->json(
+            array_merge($data->toArray(), ['status' => 'success'])
+        );    
+    }
 }
