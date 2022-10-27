@@ -47,6 +47,8 @@ Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::get('admin/property-list', [PropertyController::class, 'PropertyListForAdmin']);
     Route::get('admin/users-list', [AuthController::class, 'UserListForAdmin']);
     Route::delete('users/delete/{id}', [AuthController::class, 'delete']);
+    Route::delete('delete-account', [AuthController::class, 'disableaccountpermanently']);
+
     Route::get('users/restore/{id}', [AuthController::class, 'restore']);
     
     Route::get('users-role/agent', [AuthController::class, 'viewUsersRoleAgent']);

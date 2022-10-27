@@ -122,7 +122,7 @@ class PropertyController extends Controller
     public function AgentProperty(Request $request)
     {
         $user = Auth::user()->id;
-        $property = Property::where('user_id', $user)->withTrashed()
+        $property = Property::where('user_id', $user)
         ->when($request->filled('search'),function($q)
         //search for agent
         use ($request){
