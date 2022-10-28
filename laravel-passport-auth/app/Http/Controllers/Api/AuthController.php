@@ -164,7 +164,7 @@ class AuthController extends Controller
     public function disableaccountpermanently()
     {//delete own account
         $users = User::find(Auth::user()->id);
-        $users->forceDelete();
+        $users->forceDelete();//new
         return response()->json(['message' => "User Successfully Deleted.", 'data' => $users]);
     }
         //end delete users
