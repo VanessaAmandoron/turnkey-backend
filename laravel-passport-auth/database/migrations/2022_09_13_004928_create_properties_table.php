@@ -16,7 +16,9 @@ class CreatePropertiesTable extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained();
+            $table->bigInteger('user_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreignIdFor(User::class)->onDelete('cascade');
             $table->string('title');
             $table->decimal('price', 13, 2); 
             $table->unsignedTinyInteger('type'); //2 = agent; 3 = client
