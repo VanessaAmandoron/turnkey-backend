@@ -24,7 +24,7 @@ class CreateSendContactDetailsTable extends Migration
             $table->foreign('agent_id')->references('user_id')->on('properties');
             // $table->foreignIdFor(Property::class)->onDelete ('cascade');
             $table->bigInteger('property_id')->unsigned()->index();
-            $table->foreign('property_id')->references('id')->on('properties')->onDelete ('cascade');
+            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
             $table->string('property_title')->references('title')->on('properties');
             $table->string('first_name')->references('first_name')->on('users');
             $table->string('last_name')->references('last_name')->on('users');
