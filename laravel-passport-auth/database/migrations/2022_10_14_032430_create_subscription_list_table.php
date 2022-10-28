@@ -16,7 +16,7 @@ class CreateSubscriptionListTable extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('agent_id')->unsigned()->index();
-            $table->foreign('agent_id')->references('id')->on('users');
+            $table->foreign('agent_id')->references('id')->on('users')->onDelete('cascade');;
             $table->bigInteger('subscription_id')->unsigned()->index();
             $table->foreign('subscription_id')->references('id')->on('subscription_infos');
             $table->string('subscription_type');
