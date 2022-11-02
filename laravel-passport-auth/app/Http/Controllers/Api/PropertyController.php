@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePropertyRequest;
+use App\Models\ImageProperty;
 use App\Models\Property;
 use App\Models\User;
 use App\Models\SendContactDetails;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+
 
 // use Illuminate\Support\Facades\Validator;
 
@@ -47,6 +49,17 @@ class PropertyController extends Controller
         $user->properties()->save($property);
         $property->refresh();
 
+        if($request->has('images')){
+            foreach($request->file('images') as $image){
+                $imageName = $input['title'].'-image-'.time().rand(1,1000).'.'.$image->extension();
+                $image->move(public_path('property_images'),$imageName);
+                ImageProperty::create([
+                    'property_id' => $property->id,
+                    'image' =>$imageName
+                ]);
+            }
+        }
+
         return response()->json([
             "success" => true,
             "message" => "Property created successfully.",
@@ -73,7 +86,7 @@ class PropertyController extends Controller
         $p->update($request->all());
         return response()->json(
             array_merge($p->toArray(), ['status' => 'success'])
-        );  
+        );
     }
 
     // public function destroyProperty(Property $property)
@@ -92,7 +105,7 @@ class PropertyController extends Controller
         $property->delete();
         return response()->json(
             array_merge($property->toArray(), ['status' => 'success'])
-        );    
+        );
     }
     //property restore
     public function restore($id)
@@ -136,13 +149,13 @@ class PropertyController extends Controller
 
         return response()->json(
             array_merge($property->toArray(), ['status' => 'success'])
-        ); 
+        );
     }
-    
+
     public function PropertyListForAdmin(Request $request)
     {
         $property = Property::withTrashed()->when($request->filled('search'),function($q)
-        //search for 
+        //search for
         use ($request){
             $q
             ->where('title','LIKE',"%{$request -> input ('search')}%")

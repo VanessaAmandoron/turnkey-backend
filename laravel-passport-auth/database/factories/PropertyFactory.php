@@ -28,7 +28,7 @@ class PropertyFactory extends Factory
             'address_2' => $this->faker->address,
             'zip_code' => $this->faker->randomDigit,
             'city' => $this->faker->name,
-            'img' => $this->faker->imageUrl( 400, 300)
+            // 'img' => $this->faker->imageUrl( 400, 300)
         ];
     }
 }
