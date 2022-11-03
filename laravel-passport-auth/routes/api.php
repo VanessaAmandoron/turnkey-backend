@@ -42,7 +42,7 @@ Route::group(['middleware' => ['verified','auth:api']], function(){
     Route::get('users/{id}', [AuthController::class, 'GetUser']);
 
     Route::get('property/restore/{id}', [PropertyController::class, 'restore']);//admin||agent
-    Route::delete('property/delete/{id}', [PropertyController::class, 'delete']);//admin||agent
+    Route::delete('property/disable/{id}', [PropertyController::class, 'delete']);//admin||agent
     //Route::get('search-property/{title}', [PropertyController::class, 'SearchProperty']); //deleted
     Route::get('admin/property-list', [PropertyController::class, 'PropertyListForAdmin']);
     Route::get('admin/users-list', [AuthController::class, 'UserListForAdmin']);
