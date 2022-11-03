@@ -30,7 +30,7 @@ class CreatePropertiesTable extends Migration
             $table->string('address_2');
             $table->string('city');
             $table->unsignedInteger('zip_code');
-            $table->text('img')->nullable();
+            // $table->text('img')->nullable();
             $table->unsignedtinyInteger('availability')->default(1); //1 = available, 2 = unavailable
             $table->timestamps();
             $table->softDeletes();
