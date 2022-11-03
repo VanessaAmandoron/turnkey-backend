@@ -59,6 +59,7 @@ class PropertyController extends Controller
                 ]);
             }
         }
+        dd($request->file('images'));
 
         return response()->json([
             "success" => true,
