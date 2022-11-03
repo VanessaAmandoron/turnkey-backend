@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 // use Illuminate\Support\Facades\Validator;
 
@@ -49,17 +50,41 @@ class PropertyController extends Controller
         $user->properties()->save($property);
         $property->refresh();
 
-        if($request->has('images')){
-            foreach($request->file('images') as $image){
-                $imageName = $input['title'].'-image-'.time().rand(1,1000).'.'.$image->extension();
-                $image->move(public_path('property_images'),$imageName);
-                ImageProperty::create([
-                    'property_id' => $property->id,
-                    'image' =>$imageName
-                ]);
-            }
+        $images = json_decode($request->images);
+
+        try{
+            for($i = 0; $i < count($images); $i++){
+                $extension = explode('/', mime_content_type($images[$i]))[1];
+                 $image = str_replace('data:image/' . $extension . ';base64,', '', $images[$i]); 
+                 $imageName = Str::random(10).'.'.$extension;
+                 ImageProperty::create([    
+                        'property_id' => $property->id,
+                        'name' =>$imageName
+                    ]);
+                //   \File::put(storage_path(). '/' . $imageName, base64_decode($image)); 
+                Storage::disk('local')->put($imageName, base64_decode($image));
+
+                // Storage::disk('s3") ---> s3 storage line 65
+                
+                }
+        }catch(\Exception $e){
+            return response()->json($e);
         }
-        dd($request->file('images'));
+
+
+
+
+        // if($request->has('images')){
+        //     foreach($request->file('images') as $image){
+        //         $imageName = $input['title'].'-image-'.time().rand(1,1000).'.'.$image->extension();
+        //         $image->move(public_path('property_images'),$imageName);
+        //         ImageProperty::create([
+        //             'property_id' => $property->id,
+        //             'image' =>$imageName
+        //         ]);
+        //     }
+        // }
+        // dd($request->file('images'));
 
         return response()->json([
             "success" => true,
