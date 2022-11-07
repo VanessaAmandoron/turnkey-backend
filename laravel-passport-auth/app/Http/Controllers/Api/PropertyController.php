@@ -63,7 +63,8 @@ class PropertyController extends Controller
                     ]);
                 //   \File::put(storage_path(). '/' . $imageName, base64_decode($image)); 
                 Storage::disk('local')->put($imageName, base64_decode($image));
-
+                $url = Storage::url('local');
+                 
                 // Storage::disk('s3") ---> s3 storage line 65
                 
                 }
@@ -89,7 +90,8 @@ class PropertyController extends Controller
         return response()->json([
             "success" => true,
             "message" => "Property created successfully.",
-            "data" => $property
+            "data" => $property,
+            "url" =>  $url
         ]);
     }
 
