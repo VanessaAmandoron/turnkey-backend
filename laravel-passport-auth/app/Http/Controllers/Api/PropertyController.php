@@ -106,14 +106,15 @@ class PropertyController extends Controller
         $property_iid = Property::find($id)->id;
         
         $imageName = ImageProperty::where('property_id',$property_iid)->first()->name;
-        $url = Storage::url('app/'.$imageName);
-        $path = Storage::path($imageName);
+        $url = asset('storage/'.$imageName);
+        // storage_path('app/public')
+        // $path = Storage::path($imageName);
         return response()->json([
             "success" => true,
             "message" => "Property retrieved successfully.",
             "data" => $property,
-            "url" => $url,
-            "path" => $path
+            "url" => $url
+            // "path" => storage_path('app/public')
         ]);
     }
 
