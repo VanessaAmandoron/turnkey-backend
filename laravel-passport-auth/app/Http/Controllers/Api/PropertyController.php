@@ -63,7 +63,8 @@ class PropertyController extends Controller
                     ]);
                 //   \File::put(storage_path(). '/' . $imageName, base64_decode($image)); 
                 Storage::disk('local')->put($imageName, base64_decode($image));
-                $url = Storage::url('local');
+                $path = Storage::path($imageName);
+                $url = Storage::url('app/'.$imageName);
                  
                 // Storage::disk('s3") ---> s3 storage line 65
                 
@@ -91,7 +92,8 @@ class PropertyController extends Controller
             "success" => true,
             "message" => "Property created successfully.",
             "data" => $property,
-            "url" =>  $url
+            "url" => $url,
+            "path" =>  $path
         ]);
     }
 
@@ -101,10 +103,17 @@ class PropertyController extends Controller
         if (is_null($property)) {
             return $this->sendError('Property not found.');
         }
+        $property_iid = Property::find($id)->id;
+        
+        $imageName = ImageProperty::where('property_id',$property_iid)->first()->name;
+        $url = Storage::url('app/'.$imageName);
+        $path = Storage::path($imageName);
         return response()->json([
             "success" => true,
             "message" => "Property retrieved successfully.",
-            "data" => $property
+            "data" => $property,
+            "url" => $url,
+            "path" => $path
         ]);
     }
 
