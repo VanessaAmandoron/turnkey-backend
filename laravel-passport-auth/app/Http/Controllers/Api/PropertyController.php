@@ -33,8 +33,12 @@ class PropertyController extends Controller
             ->orWhere('area','LIKE',"%{$request -> input ('search')}%");
         })->paginate(20);
         //end search for client
+    
+        
+        $imageName = ImageProperty::get();
+        // $url = asset('storage/'.$imageName);
         return response()->json(
-            array_merge($property->toArray(), ['status' => 'success'])
+            array_merge($property->toArray(), ['status' => 'success', 'photo_url' => $imageName])
         );
     }
 
@@ -63,37 +67,19 @@ class PropertyController extends Controller
                     ]);
                 //   \File::put(storage_path(). '/' . $imageName, base64_decode($image)); 
                 Storage::disk('local')->put($imageName, base64_decode($image));
-                $path = Storage::path($imageName);
-                $url = Storage::url('app/'.$imageName);
-                 
                 // Storage::disk('s3") ---> s3 storage line 65
-                
+                $url = asset('storage/'.$imageName);
                 }
         }catch(\Exception $e){
             return response()->json($e);
         }
-
-
-
-
-        // if($request->has('images')){
-        //     foreach($request->file('images') as $image){
-        //         $imageName = $input['title'].'-image-'.time().rand(1,1000).'.'.$image->extension();
-        //         $image->move(public_path('property_images'),$imageName);
-        //         ImageProperty::create([
-        //             'property_id' => $property->id,
-        //             'image' =>$imageName
-        //         ]);
-        //     }
-        // }
-        // dd($request->file('images'));
 
         return response()->json([
             "success" => true,
             "message" => "Property created successfully.",
             "data" => $property,
             "url" => $url,
-            "path" =>  $path
+            // "path" =>  $path
         ]);
     }
 
@@ -126,16 +112,6 @@ class PropertyController extends Controller
             array_merge($p->toArray(), ['status' => 'success'])
         );
     }
-
-    // public function destroyProperty(Property $property)
-    // {
-    //     $property->delete();
-    //     return response()->json([
-    //         "success" => true,
-    //         "message" => "Property deleted successfully.",
-    //         "data" => $property
-    //     ]);
-    // }
 
     public function destroy($id)
     {
