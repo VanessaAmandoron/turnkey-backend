@@ -22,7 +22,7 @@ class PropertyController extends Controller
 {
     public function clientViewProperty(Request $request)
     {
-        $property = Property::when($request->filled('search'),function($q)
+        $property = Property::with('image_property')->when($request->filled('search'),function($q)
         //search for client
         use ($request){
             $q
@@ -32,14 +32,21 @@ class PropertyController extends Controller
             ->orWhere('price','LIKE',"%{$request -> input ('search')}%")
             ->orWhere('area','LIKE',"%{$request -> input ('search')}%");
         })->paginate(20);
+
         //end search for client
-    
         
-        $imageName = ImageProperty::get();
-        // $url = asset('storage/'.$imageName);
-        return response()->json(
-            array_merge($property->toArray(), ['status' => 'success', 'photo_url' => $imageName])
-        );
+        
+        // $imageName = ImageProperty::where();
+        // for($i = 0; $i < count($imageName); $i++){
+        return response()->json( 
+            [
+                'property' => $property,
+                'status' => 'success'
+
+                ])
+        
+        ;
+        // }
     }
 
     public function createProperty(StorePropertyRequest $request)
@@ -54,8 +61,11 @@ class PropertyController extends Controller
         $user->properties()->save($property);
         $property->refresh();
 
-        $images = json_decode($request->images);
+        $images = [];
+        if(isset($request->images)) $images=json_decode($request->images);
+        if (count($images) > 0){
 
+       
         try{
             for($i = 0; $i < count($images); $i++){
                 $extension = explode('/', mime_content_type($images[$i]))[1];
@@ -63,22 +73,23 @@ class PropertyController extends Controller
                  $imageName = Str::random(10).'.'.$extension;
                  ImageProperty::create([    
                         'property_id' => $property->id,
-                        'name' =>$imageName
+                        'name' =>asset('storage/'.$imageName)
                     ]);
                 //   \File::put(storage_path(). '/' . $imageName, base64_decode($image)); 
                 Storage::disk('local')->put($imageName, base64_decode($image));
                 // Storage::disk('s3") ---> s3 storage line 65
-                $url = asset('storage/'.$imageName);
+                // $url = asset('storage/'.$imageName);
                 }
         }catch(\Exception $e){
             return response()->json($e);
         }
+    }
 
         return response()->json([
             "success" => true,
             "message" => "Property created successfully.",
             "data" => $property,
-            "url" => $url,
+            // "url" => $url,
             // "path" =>  $path
         ]);
     }
@@ -149,7 +160,7 @@ class PropertyController extends Controller
     public function AgentProperty(Request $request)
     {
         $user = Auth::user()->id;
-        $property = Property::where('user_id', $user)
+        $property = Property::with('image_property')->where('user_id', $user)
         ->when($request->filled('search'),function($q)
         //search for agent
         use ($request){

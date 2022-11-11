@@ -28,4 +28,7 @@ class Property extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    public function image_property(){
+        return $this->hasMany(ImageProperty::class, 'property_id','id');
+    }
 }
