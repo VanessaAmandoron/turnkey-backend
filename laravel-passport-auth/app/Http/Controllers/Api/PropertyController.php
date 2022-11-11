@@ -38,12 +38,7 @@ class PropertyController extends Controller
         
         // $imageName = ImageProperty::where();
         // for($i = 0; $i < count($imageName); $i++){
-        return response()->json( 
-            [
-                'property' => $property,
-                'status' => 'success'
-
-                ])
+            return response()->json($property);
         
         ;
         // }
@@ -103,7 +98,7 @@ class PropertyController extends Controller
         $property_iid = Property::find($id)->id;
         
         $imageName = ImageProperty::where('property_id',$property_iid)->first()->name;
-        $url = asset('storage/'.$imageName);
+    $url = $imageName;
         // storage_path('app/public')
         // $path = Storage::path($imageName);
         return response()->json([
