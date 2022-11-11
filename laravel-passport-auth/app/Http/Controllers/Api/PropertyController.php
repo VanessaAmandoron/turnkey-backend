@@ -179,7 +179,7 @@ class PropertyController extends Controller
 
     public function PropertyListForAdmin(Request $request)
     {
-        $property = Property::withTrashed()->when($request->filled('search'),function($q)
+        $property = Property::with('image_property')->withTrashed()->when($request->filled('search'),function($q)
         //search for
         use ($request){
             $q
