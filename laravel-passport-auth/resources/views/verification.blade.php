@@ -8,14 +8,13 @@
   <h1 style="font-family: 'Quicksand'; text-align: left; font-weight: bold; color:#333; margin-top:40px;margin-bottom:40px; padding:3px 0px; text-transform:uppercase; ">Email Confirmation</h1>
   <p style=" text-align: justify; font-family: 'Quicksand';  margin-bottom:0px;">Hi {{$user["first_name"]}} {{$user["last_name"]}}. Thank you for signing up in Turnkey. You're almost ready to successfully create your account.
   Simply click the blue button below to verify your account</p>
-   <h4 style="text-align: left; margin-top:30px" >Please follow the link<br> 
-   <a style="color:#15c;font-size:12px;"href="{{$user["link"]}}">
-    {{$user["link"]}}</a>
-  </h4>
+   
 <div style=" margin-top:10px; ">
 
 
-   
+   <br>
+   <br>
+   <br>
     <a  href="{{$user["link"]}}"
      style="margin:auto; display:inline;width:170px;height:40px; line-height:40px; text-align:left; background:#2948FF;  border-radius: 10px; color: #fff; padding:8px 25px; text-decoration:none; box-shadow:inset 0px 0px 3px #fefefe";>Verify Your Account</a>
   </div>

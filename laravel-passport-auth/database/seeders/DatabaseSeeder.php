@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(10)->hasProperties(3)->create();
+        // User::factory()->count(10)->hasProperties(20)->create();
 
         $this->call([
             RolesAndPermissionSeeder::class,
